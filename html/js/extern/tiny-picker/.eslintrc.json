@@ -1,0 +1,23 @@
+{
+    "extends": ["eslint-config-airbnb-es5", "plugin:jasmine/recommended"],
+    "rules": {
+        "indent": ["error", 4],
+        "space-before-blocks": "off",
+        "no-plusplus": "off",
+        "func-names": "off",
+        "no-param-reassign": "off",
+        "consistent-return": "off"
+    },
+    "globals": {
+        "describe": true,
+        "it": true,
+        "Set": true,
+        "Map": true,
+        "spy": true
+    },
+    "env": {
+        "node": true,
+        "jasmine": true
+    },
+    "plugins": ["jasmine"]
+}

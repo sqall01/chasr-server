@@ -1,0 +1,76 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="html/css/ol_4.6.5.css" type="text/css">
+    <link rel="stylesheet" href="html/css/map.css" type="text/css">
+</head>
+
+<body>
+    
+<div class="wrapper_outer_div">
+
+    <div id="map_id" class="map"></div>
+
+    <div class="wrapper_inner_div">
+
+        <div class="secret_div">
+            <form name="secret_form" onsubmit="return false;">
+                <p class="headline_p">Secret:</p>
+                <input type="password" id="secret" />
+                <br />
+                Store secret? <input type="checkbox" id="store_secret" />
+                <br />
+                <button onclick="setSecret()">Set Secret</button>
+                <button onclick="clearSecret()">Clear Secret</button>
+
+                <p id="secret_set" class="info_p"></p>
+                <p id="secret_stored" class="info_p"></p>
+            </form>
+        </div>
+
+        <div class="device_div">
+            <form name="device_form" onsubmit="return false;">
+                <p class="headline_p">Device:</p>
+                <select id="device">
+                </select>
+                <button onclick="setDevice()">Select</button>
+                <p id="device_set" class="info_p"></p>
+            </form>
+        </div>
+
+        <div class="mode_div">
+            <form name="mode_form" onsubmit="return false;">
+                <p class="headline_p">Mode:</p>
+                <select id="mode">
+                    <option value="live">Live</option>
+                    <option value="view">View</option>
+                </select>
+                <button onclick="setMode()">Select</button>
+                <div id="start_end_date">
+                    Start date: <input type="text" class="TinyPicker" id="start_date" />
+                    <br />
+                    End date: <input type="text" class="TinyPicker" id="end_date" />
+                </div>
+                <p id="mode_set" class="info_p"></p>
+            </form>
+        </div>
+
+        <div class="console_div">
+            <p class="headline_p">Output:</p>
+            <textarea id="log_output" class="console" readonly="1"></textarea>
+        </div>
+
+        <div class="options_div">
+            <p class="headline_p">Options:</p>
+            <a href="index.php?logout=1">Logout</a>
+        </div>
+    </div>
+</div>
+
+<script src="html/js/extern/ol_4.6.5.js"></script>
+<script src="html/js/extern/tiny-picker/index.js"></script>
+<script src="html/js/map_core.js"></script>
+<script src="html/js/map_browser.js"></script>
+
+</body>
+</html>

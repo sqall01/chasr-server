@@ -1,0 +1,17 @@
+[general]
+
+# Log level of the tests.
+# valid log levels: DEBUG, INFO, WARNING, ERROR, CRITICAL
+loglevel = INFO
+
+# Location of the server.
+server = https://alertr.de/chasr/
+
+# Valid username for ChasR service.
+username = email@alertr.de
+
+# Valid password for ChasR service.
+password = <SECRET>
+
+# Validate HTTPS certificate.
+valid_cert = true

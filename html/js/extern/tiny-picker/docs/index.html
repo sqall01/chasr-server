@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>tiny-picker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<h1>Tiny-picker</h1>
+<input type="text" class="TinyPicker" id="startDate">
+<input type="text" class="TinyPicker" id="startDate1">
+<input type="text" class="TinyPicker" id="endDate1">
+<script src="https://cdn.rawgit.com/raymondborkowski/tiny-picker/master/index.js"></script>
+<script>
+    new TinyPicker({
+        firstBox:document.getElementById('startDate'),
+        startDate: new Date('03/20/2020'),
+        months: 2,
+        days: ['Su','Mo','Tu','We','Th','Fr','Sa'],
+        local: 'en-US',
+        allowPast: true,
+        success: function(s, e){ alert(s + ' ' + e); }
+    }).init();
+    new TinyPicker({
+        firstBox:document.getElementById('startDate1'),
+        startDate: new Date('06/16/2020'),
+        endDate: new Date('07/04/2020'),
+        lastBox: document.getElementById('endDate1'),
+        months: 3,
+        days: ['Su','Mo','Tu','We','Th','Fr','Sa'],
+        local: 'en-US',
+        success: function(s, e){ alert(s + ' ' + e); },
+        err: function(){alert('err');}
+    }).init();
+</script>
+</body>
+</html>

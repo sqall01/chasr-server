@@ -1,0 +1,91 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    font-family: Tahoma, Geneva, Sans-Serif;
+    background-color: #eeeeee;
+}
+
+.map {
+    height: 100%;
+    width: 80%;
+    float:right;
+}
+
+.map_full {
+    height: 100%;
+    width: 100%;
+}
+
+.console {
+    font-family: monospace;
+    width: 100%;
+    height: 200px;
+    border: 1px solid #aaa;
+    background-color: #f6f6f6;
+    resize: none;
+}
+
+.wrapper_outer_div {
+    width: 100%;
+    height: 100%;
+    /*border: 1px solid black; */
+    overflow: hidden;
+}
+
+.wrapper_inner_div {
+    width: 19%;
+    height: 100%;
+    padding-top: 5px;
+    /* border: 1px solid black; */
+    float:left;
+}
+
+.secret_div {
+    width: 100%;
+    padding-top: 20px;
+    padding-left: 5px;
+    /*border: 1px solid red;*/
+}
+
+.device_div {
+    width: 100%;
+    padding-top: 20px;
+    padding-left: 5px;
+    /*border: 1px solid green;*/
+}
+
+.mode_div {
+    width: 100%;
+    padding-top: 20px;
+    padding-left: 5px;
+    /*border: 1px solid blue;*/
+}
+
+.console_div {
+    width: 100%;
+    padding-top: 20px;
+    padding-left: 5px;
+    /*border: 1px solid yellow;*/
+}
+
+.options_div {
+    width: 100%;
+    padding-top: 20px;
+    padding-left: 5px;
+    /*border: 1px solid white;*/
+}
+
+.headline_p {
+    margin: 0px;
+    padding: 0px;
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
+.info_p {
+    margin: 0px;
+    padding: 0px;
+    padding-top: 5px;
+    font-style: italic;
+}

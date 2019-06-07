@@ -1,0 +1,39 @@
+{
+  "name": "tiny-picker",
+  "version": "2.1.2",
+  "description": "Ultra light weight date picker",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint .",
+    "coverage": "./node_modules/.bin/istanbul cover node_modules/jasmine/bin/jasmine.js && codecov",
+    "test": "./node_modules/.bin/jasmine && npm run lint && npm run coverage",
+    "deploy": "npm run test && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raymondborkowski/tiny-picker.git"
+  },
+  "keywords": [
+    "tinyPicker",
+    "date",
+    "picker"
+  ],
+  "author": "Raymond Borkowski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/raymondborkowski/tiny-picker/issues"
+  },
+  "homepage": "https://github.com/raymondborkowski/tiny-picker#readme",
+  "devDependencies": {
+    "babel-eslint": "^8.0.1",
+    "codecov": "^3.0.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-es5": "^1.2.0",
+    "eslint-plugin-jasmine": "^2.9.3",
+    "eslint-plugin-react": "^7.4.0",
+    "istanbul": "^0.4.5",
+    "jasmine": "^3.1.0",
+    "jsdom": "^11.8.0",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "main": "index.js"
+}

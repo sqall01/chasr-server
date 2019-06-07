@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+  - node
+  - '8'
+  - '7'
+  - '6'
+cache:
+  directories:
+  - node_modules
+install:
+  - npm install
+script:
+  - npm test
+jobs:
+  include:
+    - stage: publish
+      install: skip
+      script: skip
+      deploy:
+        provider: npm
+        email: rborkows@umich.edu
+        api_key: $NPM_TOKEN
+        on:
+          branch: master
