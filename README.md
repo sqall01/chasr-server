@@ -29,7 +29,7 @@ All clients are written to use HTTPS for security reasons. Therefore, if you wan
 # Supporting ChasR
 <a name="supporting_chasr"/>
 
-If you like this project you can help to support it by contributing to it. You can contribute by writing tutorials, creating and documenting exciting new ideas to use ChasR (for example on [reddit](https://www.reddit.com/r/AlertR/)), writing code for it, and so on.
+If you like this project you can help to support it by contributing to it. You can contribute by writing tutorials, creating and documenting exciting new ideas to use ChasR (for example on [the AlertR subreddit](https://www.reddit.com/r/AlertR/)), writing code for it, and so on.
 
 If you do not know how to do any of it or do not have the time, you can support the project by [donating](https://alertr.de/donations.php) or support me on [Patreon](https://www.patreon.com/sqall). Since the service has a monthly upkeep, the donation helps to keep these services free for everyone.
 
