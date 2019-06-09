@@ -20,7 +20,7 @@ function add_gps_data($mysqli, $user_id, $gps_data) {
         $device_id = get_device_id($mysqli, $user_id, $data["device_name"]);
         if($device_id === -1) {
             // Since the device does not exist yet, add a new one.
-            $insert_device = "INSERT INTO chasr_gps ("
+            $insert_device = "INSERT INTO chasr_device ("
             . "users_id,"
             . "name) "
             . "VALUES ("

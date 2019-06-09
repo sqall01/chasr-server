@@ -92,7 +92,10 @@ switch($_GET["mode"]) {
 
 // Fetch data.
 $fetched_data_result = NULL;
-$device_name = $_GET["device"];
+$device_name = NULL;
+if(isset($_GET["device"])) {
+    $device_name = $_GET["device"];
+}
 switch($_GET["mode"]) {
     case "last":
 

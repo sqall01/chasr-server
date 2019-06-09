@@ -55,7 +55,6 @@ $create_device_table = "CREATE TABLE IF NOT EXISTS chasr_device ("
     . "id INTEGER PRIMARY KEY AUTO_INCREMENT,"
     . "users_id INTEGER NOT NULL,"
     . "name VARCHAR(255) NOT NULL,"
-    . "PRIMARY KEY(id),"
     . "FOREIGN KEY(users_id) REFERENCES users(id)"
     . ");";
 
