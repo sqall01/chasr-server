@@ -20,11 +20,12 @@ if __name__ == '__main__':
     location = "/get.php?mode=last&device=" + device_name
     request_result = send_post_request(location, payload, file_name)
 
-    if request_result["code"] == ErrorCodes.NO_ERROR:
+    if (request_result["code"] == ErrorCodes.ILLEGAL_MSG_ERROR
+       and request_result["msg"] == "Device does not exist."):
         sys.exit(0)
     else:
         logging.error("[%s] Service error code: %d."
                       % (file_name, request_result["code"]))
         logging.debug("[%s] Json response: %s"
-                      % (file_name, r.text))
+                      % (file_name, request_result))
         sys.exit(1)

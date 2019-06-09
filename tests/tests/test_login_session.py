@@ -33,7 +33,11 @@ if __name__ == '__main__':
                                        payload,
                                        file_name,
                                        session)
-    if request_result["code"] != ErrorCodes.NO_ERROR:
+    if (request_result["code"] == ErrorCodes.NO_ERROR
+       or (request_result["code"] == ErrorCodes.ILLEGAL_MSG_ERROR
+       and request_result["msg"] == "Device does not exist.")):
+        pass
+    else:
         logging.error("[%s] Service error code: %d."
                       % (file_name, request_result["code"]))
         logging.debug("[%s] Json response: %s"
@@ -157,14 +161,14 @@ if __name__ == '__main__':
                                        payload,
                                        file_name,
                                        session)
-    if request_result["code"] != ErrorCodes.NO_ERROR:
+    if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
         logging.error("[%s] Service error code: %d."
                       % (file_name, request_result["code"]))
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
-    if len(request_result["data"]) > 0:
-        logging.error("[%s] Response contains data. "
+    if request_result["msg"] != "Device does not exist.":
+        logging.error("[%s] Response contains wrong error message. "
                       % file_name
                       + "Deleting device failed.")
         logging.debug("[%s] Json response: %s"

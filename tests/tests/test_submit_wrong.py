@@ -27,7 +27,11 @@ if __name__ == '__main__':
                + device_name
     logging.debug("[%s] Deleting gps device." % file_name)
     request_result = send_post_request(location, payload, file_name)
-    if request_result["code"] != ErrorCodes.NO_ERROR:
+    if (request_result["code"] == ErrorCodes.NO_ERROR
+       or (request_result["code"] == ErrorCodes.ILLEGAL_MSG_ERROR
+       and request_result["msg"] == "Device does not exist.")):
+        pass
+    else:
         logging.error("[%s] Service error code: %d."
                       % (file_name, request_result["code"]))
         logging.debug("[%s] Json response: %s"
@@ -42,14 +46,16 @@ if __name__ == '__main__':
                + device_name
     logging.debug("[%s] Getting gps data." % file_name)
     request_result = send_post_request(location, payload, file_name)
-    if request_result["code"] != ErrorCodes.NO_ERROR:
+    if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
         logging.error("[%s] Service error code: %d."
                       % (file_name, request_result["code"]))
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
-    if len(request_result["data"]) > 0:
-        logging.error("[%s] Server has still submitted data.")
+    if request_result["msg"] != "Device does not exist.":
+        logging.error("[%s] Response contains wrong error message. "
+                      % file_name
+                      + "Deleting device failed.")
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
@@ -75,14 +81,16 @@ if __name__ == '__main__':
                + device_name
     logging.debug("[%s] Getting gps data." % file_name)
     request_result = send_post_request(location, payload, file_name)
-    if request_result["code"] != ErrorCodes.NO_ERROR:
+    if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
         logging.error("[%s] Service error code: %d."
                       % (file_name, request_result["code"]))
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
-    if len(request_result["data"]) > 0:
-        logging.error("[%s] Server submitted data.")
+    if request_result["msg"] != "Device does not exist.":
+        logging.error("[%s] Response contains wrong error message. "
+                      % file_name
+                      + "Server submitted data.")
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
@@ -120,14 +128,16 @@ if __name__ == '__main__':
                    + device_name
         logging.debug("[%s] Getting gps data." % file_name)
         request_result = send_post_request(location, payload, file_name)
-        if request_result["code"] != ErrorCodes.NO_ERROR:
+        if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
             logging.error("[%s] Service error code: %d."
                           % (file_name, request_result["code"]))
             logging.debug("[%s] Json response: %s"
                           % (file_name, request_result))
             sys.exit(1)
-        if len(request_result["data"]) > 0:
-            logging.error("[%s] Server submitted data.")
+        if request_result["msg"] != "Device does not exist.":
+            logging.error("[%s] Response contains wrong error message. "
+                          % file_name
+                          + "Server submitted data.")
             logging.debug("[%s] Json response: %s"
                           % (file_name, request_result))
             sys.exit(1)
@@ -163,14 +173,16 @@ if __name__ == '__main__':
                    + device_name
         logging.debug("[%s] Getting gps data." % file_name)
         request_result = send_post_request(location, payload, file_name)
-        if request_result["code"] != ErrorCodes.NO_ERROR:
+        if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
             logging.error("[%s] Service error code: %d."
                           % (file_name, request_result["code"]))
             logging.debug("[%s] Json response: %s"
                           % (file_name, request_result))
             sys.exit(1)
-        if len(request_result["data"]) > 0:
-            logging.error("[%s] Server submitted data.")
+        if request_result["msg"] != "Device does not exist.":
+            logging.error("[%s] Response contains wrong error message. "
+                          % file_name
+                          + "Server submitted data.")
             logging.debug("[%s] Json response: %s"
                           % (file_name, request_result))
             sys.exit(1)
@@ -206,14 +218,16 @@ if __name__ == '__main__':
                    + device_name
         logging.debug("[%s] Getting gps data." % file_name)
         request_result = send_post_request(location, payload, file_name)
-        if request_result["code"] != ErrorCodes.NO_ERROR:
+        if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
             logging.error("[%s] Service error code: %d."
                           % (file_name, request_result["code"]))
             logging.debug("[%s] Json response: %s"
                           % (file_name, request_result))
             sys.exit(1)
-        if len(request_result["data"]) > 0:
-            logging.error("[%s] Server submitted data.")
+        if request_result["msg"] != "Device does not exist.":
+            logging.error("[%s] Response contains wrong error message. "
+                          % file_name
+                          + "Server submitted data.")
             logging.debug("[%s] Json response: %s"
                           % (file_name, request_result))
             sys.exit(1)
@@ -245,14 +259,16 @@ if __name__ == '__main__':
                + device_name
     logging.debug("[%s] Getting gps data." % file_name)
     request_result = send_post_request(location, payload, file_name)
-    if request_result["code"] != ErrorCodes.NO_ERROR:
+    if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
         logging.error("[%s] Service error code: %d."
                       % (file_name, request_result["code"]))
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
-    if len(request_result["data"]) > 0:
-        logging.error("[%s] Server submitted data.")
+    if request_result["msg"] != "Device does not exist.":
+        logging.error("[%s] Response contains wrong error message. "
+                      % file_name
+                      + "Server submitted data.")
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
@@ -285,14 +301,16 @@ if __name__ == '__main__':
                + device_name
     logging.debug("[%s] Getting gps data." % file_name)
     request_result = send_post_request(location, payload, file_name)
-    if request_result["code"] != ErrorCodes.NO_ERROR:
+    if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
         logging.error("[%s] Service error code: %d."
                       % (file_name, request_result["code"]))
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
-    if len(request_result["data"]) > 0:
-        logging.error("[%s] Server submitted data.")
+    if request_result["msg"] != "Device does not exist.":
+        logging.error("[%s] Response contains wrong error message. "
+                      % file_name
+                      + "Server submitted data.")
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
@@ -324,14 +342,16 @@ if __name__ == '__main__':
                + device_name
     logging.debug("[%s] Getting gps data." % file_name)
     request_result = send_post_request(location, payload, file_name)
-    if request_result["code"] != ErrorCodes.NO_ERROR:
+    if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
         logging.error("[%s] Service error code: %d."
                       % (file_name, request_result["code"]))
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
-    if len(request_result["data"]) > 0:
-        logging.error("[%s] Server submitted data.")
+    if request_result["msg"] != "Device does not exist.":
+        logging.error("[%s] Response contains wrong error message. "
+                      % file_name
+                      + "Server submitted data.")
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
@@ -365,14 +385,16 @@ if __name__ == '__main__':
                + long_device_name
     logging.debug("[%s] Getting gps data." % file_name)
     request_result = send_post_request(location, payload, file_name)
-    if request_result["code"] != ErrorCodes.NO_ERROR:
+    if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
         logging.error("[%s] Service error code: %d."
                       % (file_name, request_result["code"]))
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
-    if len(request_result["data"]) > 0:
-        logging.error("[%s] Server submitted data.")
+    if request_result["msg"] != "Device does not exist.":
+        logging.error("[%s] Response contains wrong error message. "
+                      % file_name
+                      + "Server submitted data.")
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
