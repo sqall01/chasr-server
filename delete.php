@@ -88,15 +88,44 @@ switch($_GET["mode"]) {
     // Delete whole device and all its data.
     case "device":
 
+        // Get id of device.
+        $device_id = get_device_id($mysqli, $user_id, $_GET["device"]);
+        if($device_id === -1) {
+            $result = array();
+            $result["code"] = ErrorCodes::ILLEGAL_MSG_ERROR;
+            $result["msg"] = "Device does not exist.";
+            die(json_encode($result));
+        }
+        else if($device_id === -2) {
+            $result = array();
+            $result["code"] = ErrorCodes::DATABASE_ERROR;
+            $result["msg"] = "Error while fetching device id.";
+            die(json_encode($result));
+        }
+        
+        // Delete gps data.
         $delete_gps = "DELETE FROM chasr_gps WHERE "
-                      . "users_id = "
+                      . "users_id="
                       . intval($user_id)
                       . " AND "
-                      . "device_name = '"
-                      . $mysqli->real_escape_string($_GET["device"])
-                      . "'";
-
+                      . "device_id="
+                      . intval($device_id);
         $result = $mysqli->query($delete_gps);
+        if(!$result) {
+            $result = array();
+            $result["code"] = ErrorCodes::DATABASE_ERROR;
+            $result["msg"] = $mysqli->error;
+            die(json_encode($result));
+        }
+
+        // Delete device.
+        $delete_device = "DELETE FROM chasr_device WHERE "
+                         . "users_id="
+                         . intval($user_id)
+                         . " AND "
+                         . "id="
+                         . intval($device_id);
+        $result = $mysqli->query($delete_device);
         if(!$result) {
             $result = array();
             $result["code"] = ErrorCodes::DATABASE_ERROR;
@@ -118,16 +147,31 @@ switch($_GET["mode"]) {
             die(json_encode($result));
         }
 
+        // Get id of device.
+        $device_id = get_device_id($mysqli, $user_id, $_GET["device"]);
+        if($device_id === -1) {
+            $result = array();
+            $result["code"] = ErrorCodes::ILLEGAL_MSG_ERROR;
+            $result["msg"] = "Device does not exist.";
+            die(json_encode($result));
+        }
+        else if($device_id === -2) {
+            $result = array();
+            $result["code"] = ErrorCodes::DATABASE_ERROR;
+            $result["msg"] = "Error while fetching device id.";
+            die(json_encode($result));
+        }
+
+        // Delete gps data.
         $delete_gps = "DELETE FROM chasr_gps WHERE "
-                      . "users_id = "
+                      . "users_id="
                       . intval($user_id)
                       . " AND "
-                      . "device_name = '"
-                      . $mysqli->real_escape_string($_GET["device"])
-                      . "' AND "
-                      . "utctime = "
+                      . "device_id="
+                      . intval($device_id)
+                      . " AND "
+                      . "utctime="
                       . intval($_GET["utctime"]);
-
         $result = $mysqli->query($delete_gps);
         if(!$result) {
             $result = array();

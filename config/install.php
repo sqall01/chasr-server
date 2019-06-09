@@ -51,16 +51,25 @@ $create_passwords_table = "CREATE TABLE IF NOT EXISTS passwords ("
     . "FOREIGN KEY(users_id) REFERENCES users(id)"
     . ");";
 
+$create_device_table = "CREATE TABLE IF NOT EXISTS chasr_device ("
+    . "id INTEGER PRIMARY KEY AUTO_INCREMENT,"
+    . "users_id INTEGER NOT NULL,"
+    . "name VARCHAR(255) NOT NULL,"
+    . "PRIMARY KEY(id),"
+    . "FOREIGN KEY(users_id) REFERENCES users(id)"
+    . ");";
+
 $create_gps_table = "CREATE TABLE IF NOT EXISTS chasr_gps ("
     . "users_id INTEGER NOT NULL,"
-    . "device_name VARCHAR(255) NOT NULL,"
+    . "device_id INTEGER NOT NULL,"
     . "utctime INTEGER NOT NULL,"
     . "iv CHAR(32) NOT NULL,"
     . "latitude CHAR(32) NOT NULL,"
     . "longitude CHAR(32) NOT NULL,"
     . "altitude CHAR(32) NOT NULL,"
     . "speed CHAR(32) NOT NULL,"
-    . "PRIMARY KEY(users_id, device_name, utctime),"
+    . "PRIMARY KEY(users_id, device_id, utctime),"
+    . "FOREIGN KEY(device_id) REFERENCES chasr_device(id),"
     . "FOREIGN KEY(users_id) REFERENCES users(id)"
     . ");";
 
@@ -75,6 +84,9 @@ if($mysqli->query($create_tokens_table) !== TRUE) {
 }
 if($mysqli->query($create_passwords_table) !== TRUE) {
     die("Error: Creating 'passwords' table failed.");
+}
+if($mysqli->query($create_device_table) !== TRUE) {
+    die("Error: Creating 'chasr_device' table failed.");
 }
 if($mysqli->query($create_gps_table) !== TRUE) {
     die("Error: Creating 'chasr_gps' table failed.");

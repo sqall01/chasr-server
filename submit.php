@@ -16,14 +16,40 @@ function add_gps_data($mysqli, $user_id, $gps_data) {
 
     foreach($gps_data as $data) {
 
+        // Get id of device.
+        $device_id = get_device_id($mysqli, $user_id, $data["device_name"]);
+        if($device_id === -1) {
+            // Since the device does not exist yet, add a new one.
+            $insert_device = "INSERT INTO chasr_gps ("
+            . "users_id,"
+            . "name) "
+            . "VALUES ("
+            . intval($user_id) . ","
+            . "'" . $mysqli->real_escape_string($data["device_name"]) . "'"
+            . ")";
+            $result = $mysqli->query($insert_device);
+            if(!$result) {
+                $result = array();
+                $result["code"] = ErrorCodes::DATABASE_ERROR;
+                $result["msg"] = $mysqli->error;
+                die(json_encode($result));
+            }
+            $device_id = $mysqli->insert_id;
+        }
+        else if($device_id === -2) {
+            $result = array();
+            $result["code"] = ErrorCodes::DATABASE_ERROR;
+            $result["msg"] = "Error while fetching device id.";
+            die(json_encode($result));
+        }
+
         // Ignore duplicated entries.
         $select_gps = "SELECT users_id FROM chasr_gps WHERE "
             . "users_id="
             . intval($user_id)
             . " AND "
-            . "device_name='"
-            . $mysqli->real_escape_string($data["device_name"])
-            . "' "
+            . "device_id="
+            . intval($device_id)
             . " AND "
             . "utctime="
             . intval($data["utctime"]);
@@ -42,7 +68,7 @@ function add_gps_data($mysqli, $user_id, $gps_data) {
         // Insert gps data.
         $insert_gps = "INSERT INTO chasr_gps ("
             . "users_id,"
-            . "device_name,"
+            . "device_id,"
             . "utctime,"
             . "iv,"
             . "latitude,"
@@ -51,7 +77,7 @@ function add_gps_data($mysqli, $user_id, $gps_data) {
             . "speed) "
             . " VALUES ("
             . intval($user_id) . ","
-            . "'" . $mysqli->real_escape_string($data["device_name"]) ."',"
+            . intval($device_id) .","
             . intval($data["utctime"]) . ","
             . "'" . $mysqli->real_escape_string($data["iv"]) . "',"
             . "'" . $mysqli->real_escape_string($data["lat"]) . "',"

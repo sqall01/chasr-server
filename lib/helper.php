@@ -143,4 +143,29 @@ function chasr_session_destroy() {
     }
 }
 
+// Gets device id from database for given device,
+// returns -1 if device does not exist,
+// returns -2 if the database connection fails.
+function get_device_id($mysqli, $user_id, $device_name) {
+    // Get id of device.
+    $select_device = "SELECT id, "
+                     . "name "
+                     . "FROM chasr_device "
+                     . "WHERE users_id="
+                     . intval($user_id)
+                     . " AND name='"
+                     . $mysqli->real_escape_string($device_name)
+                     . "'";
+    $result = $mysqli->query($select_device);
+    if(!$result) {
+        return -2;
+    }
+    $row = $result->fetch_assoc();
+    if(!$row) {
+        return -1;
+    }
+    $device_id = $row["id"];
+    return $device_id;
+}
+
 ?>

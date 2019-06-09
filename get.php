@@ -92,6 +92,7 @@ switch($_GET["mode"]) {
 
 // Fetch data.
 $fetched_data_result = NULL;
+$device_name = $_GET["device"];
 switch($_GET["mode"]) {
     case "last":
 
@@ -107,6 +108,21 @@ switch($_GET["mode"]) {
             $limit = 1000;
         }
 
+        // Get id of device.
+        $device_id = get_device_id($mysqli, $user_id, $_GET["device"]);
+        if($device_id === -1) {
+            $result = array();
+            $result["code"] = ErrorCodes::ILLEGAL_MSG_ERROR;
+            $result["msg"] = "Device does not exist.";
+            die(json_encode($result));
+        }
+        else if($device_id === -2) {
+            $result = array();
+            $result["code"] = ErrorCodes::DATABASE_ERROR;
+            $result["msg"] = "Error while fetching device id.";
+            die(json_encode($result));
+        }
+
         // Get gps positions.
         $select_gps = "SELECT "
                       . "utctime,"
@@ -114,14 +130,12 @@ switch($_GET["mode"]) {
                       . "latitude,"
                       . "longitude,"
                       . "altitude,"
-                      . "speed,"
-                      . "device_name "
+                      . "speed "
                       . "FROM chasr_gps "
                       . "WHERE users_id="
                       . intval($user_id)
-                      . " AND device_name='"
-                      . $mysqli->real_escape_string($_GET["device"])
-                      . "' "
+                      . " AND device_id="
+                      . intval($device_id)
                       . " ORDER BY utctime DESC"
                       . " LIMIT "
                       . $limit;
@@ -147,6 +161,21 @@ switch($_GET["mode"]) {
             die(json_encode($result));
         }
 
+        // Get id of device.
+        $device_id = get_device_id($mysqli, $user_id, $_GET["device"]);
+        if($device_id === -1) {
+            $result = array();
+            $result["code"] = ErrorCodes::ILLEGAL_MSG_ERROR;
+            $result["msg"] = "Device does not exist.";
+            die(json_encode($result));
+        }
+        else if($device_id === -2) {
+            $result = array();
+            $result["code"] = ErrorCodes::DATABASE_ERROR;
+            $result["msg"] = "Error while fetching device id.";
+            die(json_encode($result));
+        }
+
         // Get gps positions.
         $select_gps = "SELECT "
                       . "utctime,"
@@ -154,14 +183,12 @@ switch($_GET["mode"]) {
                       . "latitude,"
                       . "longitude,"
                       . "altitude,"
-                      . "speed,"
-                      . "device_name "
+                      . "speed "
                       . "FROM chasr_gps "
                       . "WHERE users_id="
                       . intval($user_id)
-                      . " AND device_name='"
-                      . $mysqli->real_escape_string($_GET["device"])
-                      . "' "
+                      . " AND device_id="
+                      . intval($device_id)
                       . " AND utctime >= "
                       . intval($_GET["start"])
                       . " AND utctime <= "
@@ -179,11 +206,11 @@ switch($_GET["mode"]) {
     case "devices":
         // Get all devices positions.
         $select_devices = "SELECT DISTINCT "
-                          . "device_name "
-                          . "FROM chasr_gps "
+                          . "name "
+                          . "FROM chasr_device "
                           . "WHERE users_id="
                           . intval($user_id)
-                          . " ORDER BY device_name ASC";
+                          . " ORDER BY name ASC";
         $fetched_data_result = $mysqli->query($select_devices);
         if(!$fetched_data_result) {
             $result = array();
@@ -212,7 +239,7 @@ switch($_GET["mode"]) {
     case "devices":
         $output_data = array();
         while($row = $fetched_data_result->fetch_assoc()) {
-            $element = array("device_name" => $row["device_name"]);
+            $element = array("device_name" => $row["name"]);
             // Append element to array.
             $output_data[] = $element;
         }
@@ -221,7 +248,7 @@ switch($_GET["mode"]) {
     default:
         $output_data = array();
         while($row = $fetched_data_result->fetch_assoc()) {
-            $element = array("device_name" => $row["device_name"],
+            $element = array("device_name" => $device_name,
                 "utctime" => intval($row["utctime"]),
                 "iv" => $row["iv"],
                 "lat" => $row["latitude"],
