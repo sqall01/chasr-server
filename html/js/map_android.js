@@ -8,10 +8,22 @@ function console_error(text) {
 
 // Is called after "callbackGpsPosition()" if it is a start GPS position.
 function callbackStartGpsPosition(gps_point) {
+    var lon = gps_point["lon"];
+    var lat = gps_point["lat"];
+    var alt = gps_point["alt"];
+    var speed = gps_point["speed"];
+    var utctime = gps_point["utctime"];
+    Android.startGpsPosition(lat, lon, alt, speed, utctime);
 }
 
 // Is called after "callbackGpsPosition()" if it is an end GPS position.
 function callbackEndGpsPosition(gps_point) {
+    var lon = gps_point["lon"];
+    var lat = gps_point["lat"];
+    var alt = gps_point["alt"];
+    var speed = gps_point["speed"];
+    var utctime = gps_point["utctime"];
+    Android.endGpsPosition(lat, lon, alt, speed, utctime);
 }
 
 // Is called after a GPS position is placed on the map.
