@@ -19,8 +19,8 @@ if __name__ == '__main__':
     device_name = __file__
 
     # Wrong mode.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=last_wrong" \
                + "&device=" \
                + device_name
@@ -34,8 +34,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Missing device for mode "last".
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=last"
     logging.debug("[%s] Getting gps data." % file_name)
     request_result = send_post_request(location, payload, file_name)
@@ -47,8 +47,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Missing device for mode "view".
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=view" \
                + "&start=1" \
                + "&end=2"
@@ -62,8 +62,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Missing start for mode "view".
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=view" \
                + "&device=" \
                + device_name \
@@ -78,8 +78,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Missing end for mode "view".
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=view" \
                + "&device=" \
                + device_name \

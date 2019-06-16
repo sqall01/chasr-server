@@ -32,8 +32,8 @@ if __name__ == '__main__':
                 "utctime": utctime}
 
     # Submit data.
-    payload = {"user": Settings.username,
-               "password": Settings.password,
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices,
                "gps_data": json.dumps([gps_data])}
     logging.debug("[%s] Submitting gps data." % file_name)
     request_result = send_post_request("/submit.php", payload, file_name)
@@ -44,8 +44,8 @@ if __name__ == '__main__':
                       % (file_name, request_result))
         sys.exit(1)
 
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=last" \
                + "&device=" \
                + device_name
@@ -71,8 +71,8 @@ if __name__ == '__main__':
             sys.exit(1)
 
     # Delete submitted data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/delete.php?mode=position" \
                + "&utctime=" \
                + str(utctime) \
@@ -88,8 +88,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Get submitted data and check received data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=last" \
                + "&device=" \
                + device_name
@@ -118,8 +118,8 @@ if __name__ == '__main__':
             sys.exit(1)
 
     # Delete device for clean up.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/delete.php?mode=device" \
                + "&device=" \
                + device_name
@@ -133,8 +133,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Get submitted data and check received data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=last" \
                + "&device=" \
                + device_name

@@ -17,12 +17,12 @@ if __name__ == '__main__':
     file_name = os.path.basename(__file__)
     parse_config()
 
-    num_devices = 10
+    num_devices = Settings.num_max_devices
     device_name = __file__
 
     # Get all existing devices and delete them for clean up.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=devices"
     logging.debug("[%s] Getting devices data." % file_name)
     request_result = send_post_request(location, payload, file_name)
@@ -34,8 +34,8 @@ if __name__ == '__main__':
         sys.exit(1)
     device_data_recv = request_result["data"]["devices"]
     for device_dict in device_data_recv:
-        payload = {"user": Settings.username,
-                   "password": Settings.password}
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices}
         location = "/delete.php?mode=device" \
                    + "&device=" \
                    + device_dict["device_name"]
@@ -58,7 +58,7 @@ if __name__ == '__main__':
         alt = binascii.hexlify(os.urandom(16)).decode("utf-8")
         speed = binascii.hexlify(os.urandom(16)).decode("utf-8")
         utctime = utctime_start + i
-        curr_device_name = device_name + "_" + str(i)
+        curr_device_name = device_name + "_%09d" % i
         gps_data = {"iv": iv,
                     "device_name": curr_device_name,
                     "lat": lat,
@@ -68,8 +68,8 @@ if __name__ == '__main__':
                     "utctime": utctime}
 
         # Submit data.
-        payload = {"user": Settings.username,
-                   "password": Settings.password,
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices,
                    "gps_data": json.dumps([gps_data])}
         logging.debug("[%s] Submitting gps data." % file_name)
         request_result = send_post_request("/submit.php", payload, file_name)
@@ -81,8 +81,8 @@ if __name__ == '__main__':
             sys.exit(1)
 
     # Get devices and check received data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=devices"
     logging.debug("[%s] Getting devices data." % file_name)
     request_result = send_post_request(location, payload, file_name)
@@ -107,7 +107,7 @@ if __name__ == '__main__':
 
         gps_data_recv = device_data_recv[i]
 
-        curr_device_name = device_name + "_" + str(i)
+        curr_device_name = device_name + "_%09d" % i
         if curr_device_name != gps_data_recv["device_name"]:
             logging.error("[%s] Device name '%s' wrong data."
                           % (file_name, gps_data_recv["device_name"]))
@@ -122,9 +122,9 @@ if __name__ == '__main__':
     for i in range(num_devices):
 
         # Delete devices for clean up.
-        curr_device_name = device_name + "_" + str(i)
-        payload = {"user": Settings.username,
-                   "password": Settings.password}
+        curr_device_name = device_name + "_%09d" % i
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices}
         location = "/delete.php?mode=device" \
                    + "&device=" \
                    + curr_device_name
@@ -138,8 +138,8 @@ if __name__ == '__main__':
             sys.exit(1)
 
     # Get submitted data and check received data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=devices"
     logging.debug("[%s] Getting devices data." % file_name)
     request_result = send_post_request(location, payload, file_name)

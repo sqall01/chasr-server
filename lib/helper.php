@@ -168,4 +168,25 @@ function get_device_id($mysqli, $user_id, $device_name) {
     return $device_id;
 }
 
+// Gets users acls from database,
+// returns -1 if the database connection fails,
+// returns array with acls of user.
+function get_user_acl($mysqli, $user_id) {
+    // Get id of device.
+    $select_acl = "SELECT acl "
+                  . "FROM acl "
+                  . "WHERE users_id="
+                  . intval($user_id);
+    $result = $mysqli->query($select_acl);
+    if(!$result) {
+        return -1;
+    }
+
+    $acls = array();
+    while($row = $result->fetch_assoc()) {
+        $acls[] = $row["acl"];
+    }
+    return $acls;
+}
+
 ?>

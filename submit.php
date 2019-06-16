@@ -14,12 +14,80 @@ require_once(__DIR__ . "/lib/objects.php");
 // Adds gps data to the database. Dies if we have database error.
 function add_gps_data($mysqli, $user_id, $gps_data) {
 
+    // Get users acls.
+    $acls = get_user_acl($mysqli, $user_id);
+    if($acls === -1) {
+        $result = array();
+        $result["code"] = ErrorCodes::DATABASE_ERROR;
+        $result["msg"] = "Error while fetching user acls.";
+        die(json_encode($result));
+    }
+
+    // Get number of allowed devices.
+    $num_allowed_devices = $GLOBALS["config_chasr_num_min_devices"];
+    if(in_array(AclCodes::CHASR_MID_DEVICES, $acls)) {
+        $num_allowed_devices = $GLOBALS["config_chasr_num_mid_devices"];
+    }
+    if(in_array(AclCodes::CHASR_MAX_DEVICES, $acls)) {
+        $num_allowed_devices = $GLOBALS["config_chasr_num_max_devices"];
+    }
+
+    // Get already stored devices.
+    $select_devices = "SELECT name FROM chasr_device WHERE users_id="
+                      . intval($user_id);
+    $result = $mysqli->query($select_devices);
+    if(!$result) {
+        $result = array();
+        $result["code"] = ErrorCodes::DATABASE_ERROR;
+        $result["msg"] = $mysqli->error;
+        die(json_encode($result));
+    }
+    $stored_devices = array();
+    while($row = $result->fetch_assoc()) {
+        $stored_devices[] = $row["name"];
+    }
+
+    // Check if already more devices are stored than allowed.
+    if(count($stored_devices) > $num_allowed_devices) {
+        $result = array();
+        $result["code"] = ErrorCodes::ACL_ERROR;
+        $result["msg"] = "More devices stored than allowed.";
+        die(json_encode($result));
+    }
+
     foreach($gps_data as $data) {
 
-        // Get id of device.
-        $device_id = get_device_id($mysqli, $user_id, $data["device_name"]);
-        if($device_id === -1) {
-            // Since the device does not exist yet, add a new one.
+        // Get id of device if it already exists.
+        $device_id = -1;
+        $create_new = FALSE;
+        if(in_array($data["device_name"], $stored_devices)) {
+            $device_id = get_device_id($mysqli,
+                                       $user_id,
+                                       $data["device_name"]);
+            if($device_id === -1) {
+                $create_new = TRUE;
+            }
+            else if($device_id === -2) {
+                $result = array();
+                $result["code"] = ErrorCodes::DATABASE_ERROR;
+                $result["msg"] = "Error while fetching device id.";
+                die(json_encode($result));
+            }
+        }
+        else {
+            $create_new = TRUE;
+        }
+
+        // Since the device does not exist yet, add a new one.
+        if($create_new === TRUE) {
+            // Check if a device slot for the new device is left
+            if((count($stored_devices) + 1) > $num_allowed_devices) {
+                $result = array();
+                $result["code"] = ErrorCodes::ACL_ERROR;
+                $result["msg"] = "No device slot left.";
+                die(json_encode($result));
+            }
+
             $insert_device = "INSERT INTO chasr_device ("
             . "users_id,"
             . "name) "
@@ -35,11 +103,14 @@ function add_gps_data($mysqli, $user_id, $gps_data) {
                 die(json_encode($result));
             }
             $device_id = $mysqli->insert_id;
+            $stored_devices[] = $data["device_name"];
         }
-        else if($device_id === -2) {
+
+        // Unreachable state, but be passive because it is still PHP ;)
+        if($device_id === -1) {
             $result = array();
             $result["code"] = ErrorCodes::DATABASE_ERROR;
-            $result["msg"] = "Error while fetching device id.";
+            $result["msg"] = "Unreachable state reached.";
             die(json_encode($result));
         }
 

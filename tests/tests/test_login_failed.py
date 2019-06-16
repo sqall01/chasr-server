@@ -15,8 +15,8 @@ if __name__ == '__main__':
     parse_config()
 
     device_name = __file__
-    payload = {"user": Settings.username,
-               "password": Settings.password + "_FAILED"}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices + "_FAILED"}
     location = "/get.php?mode=last&device=" + device_name
     request_result = send_post_request(location, payload, file_name)
 

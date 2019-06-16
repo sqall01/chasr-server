@@ -32,8 +32,8 @@ if __name__ == '__main__':
                 "utctime": utctime}
 
     # Submit test data.
-    payload = {"user": Settings.username,
-               "password": Settings.password,
+    payload = {"user": Settings.username_no_acl,
+               "password": Settings.password_no_acl,
                "gps_data": json.dumps([gps_data])}
     logging.debug("[%s] Submitting gps data." % file_name)
     request_result = send_post_request("/submit.php", payload, file_name)
@@ -45,8 +45,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Wrong mode.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_no_acl,
+               "password": Settings.password_no_acl}
     location = "/delete.php?mode=position_wrong"
     logging.debug("[%s] Deleting gps data." % file_name)
     request_result = send_post_request(location, payload, file_name)
@@ -58,8 +58,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Get submitted data and check received data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_no_acl,
+               "password": Settings.password_no_acl}
     location = "/get.php?mode=last" \
                + "&device=" \
                + device_name
@@ -83,8 +83,8 @@ if __name__ == '__main__':
             sys.exit(1)
 
     # Missing device for mode "position".
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_no_acl,
+               "password": Settings.password_no_acl}
     location = "/delete.php?mode=position" \
                + "&utctime=" \
                + str(utctime)
@@ -98,8 +98,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Get submitted data and check received data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_no_acl,
+               "password": Settings.password_no_acl}
     location = "/get.php?mode=last" \
                + "&device=" \
                + device_name
@@ -123,8 +123,8 @@ if __name__ == '__main__':
             sys.exit(1)
 
     # Missing utctime for mode "position".
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_no_acl,
+               "password": Settings.password_no_acl}
     location = "/delete.php?mode=position" \
                + "&device=" \
                + device_name
@@ -138,8 +138,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Get submitted data and check received data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_no_acl,
+               "password": Settings.password_no_acl}
     location = "/get.php?mode=last" \
                + "&device=" \
                + device_name
@@ -163,8 +163,8 @@ if __name__ == '__main__':
             sys.exit(1)
 
     # Missing device for mode "device".
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_no_acl,
+               "password": Settings.password_no_acl}
     location = "/delete.php?mode=device"
     logging.debug("[%s] Deleting gps data." % file_name)
     request_result = send_post_request(location, payload, file_name)
@@ -176,8 +176,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Get submitted data and check received data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_no_acl,
+               "password": Settings.password_no_acl}
     location = "/get.php?mode=last" \
                + "&device=" \
                + device_name
@@ -201,8 +201,8 @@ if __name__ == '__main__':
             sys.exit(1)
 
     # Delete device for clean up.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_no_acl,
+               "password": Settings.password_no_acl}
     location = "/delete.php?mode=device" \
                + "&device=" \
                + device_name
@@ -216,8 +216,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Get submitted data and check received data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_no_acl,
+               "password": Settings.password_no_acl}
     location = "/get.php?mode=last" \
                + "&device=" \
                + device_name

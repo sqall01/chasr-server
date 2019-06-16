@@ -23,8 +23,8 @@ if __name__ == '__main__':
     device_name = __file__
 
     # Login for session
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=last" \
                + "&device=" \
                + device_name

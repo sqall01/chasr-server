@@ -19,11 +19,19 @@ class ErrorCodes:
     AUTH_ERROR = 2
     ILLEGAL_MSG_ERROR = 3
     SESSION_EXPIRED = 4
+    ACL_ERROR = 5
 
 class Settings:
     server = None
-    username = None
-    password = None
+    num_min_devices = None
+    num_mid_devices = None
+    num_max_devices = None
+    username_max_devices = None
+    password_max_devices = None
+    username_mid_devices = None
+    password_mid_devices = None
+    username_no_acl = None
+    password_no_acl = None
     valid_cert = None
 
 # Function creates a path location for the given user input.
@@ -75,8 +83,21 @@ def parse_config():
     # Parse settings from config file.
     try:
         Settings.server = config.get("general", "server")
-        Settings.username = config.get("general", "username")
-        Settings.password = config.get("general", "password")
+        Settings.num_min_devices = config.getint("general", "num_min_devices")
+        Settings.num_mid_devices = config.getint("general", "num_mid_devices")
+        Settings.num_max_devices = config.getint("general", "num_max_devices")
+        Settings.username_max_devices = config.get("general",
+                                                   "username_max_devices")
+        Settings.password_max_devices = config.get("general",
+                                                   "password_max_devices")
+        Settings.username_mid_devices = config.get("general",
+                                                   "username_mid_devices")
+        Settings.password_mid_devices = config.get("general",
+                                                   "password_mid_devices")
+        Settings.username_no_acl = config.get("general",
+                                              "username_no_acl")
+        Settings.password_no_acl = config.get("general",
+                                              "password_no_acl")
         Settings.valid_cert = config.getboolean("general", "valid_cert")
     except:
         logging.exception("[%s] Failed parsing config file" % file_name)

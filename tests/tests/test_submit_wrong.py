@@ -20,8 +20,8 @@ if __name__ == '__main__':
     utctime = int(time.time())
 
     # Delete device to make sure no data is left.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/delete.php?mode=device" \
                + "&device=" \
                + device_name
@@ -39,8 +39,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Check if server does not have any data left.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=last" \
                + "&device=" \
                + device_name
@@ -61,8 +61,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Missing gps_data for submission.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/submit.php"
     logging.debug("[%s] Submitting gps data (missing gps_data)." % file_name)
     request_result = send_post_request(location, payload, file_name)
@@ -74,8 +74,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Get submitted data and check received data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=last" \
                + "&device=" \
                + device_name
@@ -106,8 +106,8 @@ if __name__ == '__main__':
             if key == curr_key:
                 continue
             gps_data[key] = "A"*32
-        payload = {"user": Settings.username,
-                   "password": Settings.password,
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices,
                    "gps_data": json.dumps([gps_data])}
         location = "/submit.php"
         logging.debug("[%s] Submitting gps data (missing %s in gps_data)."
@@ -121,8 +121,8 @@ if __name__ == '__main__':
             sys.exit(1)
 
         # Get submitted data and check received data.
-        payload = {"user": Settings.username,
-                   "password": Settings.password}
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices}
         location = "/get.php?mode=last" \
                    + "&device=" \
                    + device_name
@@ -151,8 +151,8 @@ if __name__ == '__main__':
                 gps_data[key] = "B"*31
             else:
                 gps_data[key] = "A"*32
-        payload = {"user": Settings.username,
-                   "password": Settings.password,
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices,
                    "gps_data": json.dumps([gps_data])}
         location = "/submit.php"
         logging.debug("[%s] Submitting gps data (short %s in gps_data)."
@@ -166,8 +166,8 @@ if __name__ == '__main__':
             sys.exit(1)
 
         # Get submitted data and check received data.
-        payload = {"user": Settings.username,
-                   "password": Settings.password}
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices}
         location = "/get.php?mode=last" \
                    + "&device=" \
                    + device_name
@@ -196,8 +196,8 @@ if __name__ == '__main__':
                 gps_data[key] = "B"*33
             else:
                 gps_data[key] = "A"*32
-        payload = {"user": Settings.username,
-                   "password": Settings.password,
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices,
                    "gps_data": json.dumps([gps_data])}
         location = "/submit.php"
         logging.debug("[%s] Submitting gps data (long %s in gps_data)."
@@ -211,8 +211,8 @@ if __name__ == '__main__':
             sys.exit(1)
 
         # Get submitted data and check received data.
-        payload = {"user": Settings.username,
-                   "password": Settings.password}
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices}
         location = "/get.php?mode=last" \
                    + "&device=" \
                    + device_name
@@ -237,8 +237,8 @@ if __name__ == '__main__':
     gps_data["device_name"] = device_name
     for key in data_32_keys:
         gps_data[key] = "A"*32
-    payload = {"user": Settings.username,
-               "password": Settings.password,
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices,
                "gps_data": json.dumps([gps_data])}
     location = "/submit.php"
     logging.debug("[%s] Submitting gps data (missing utctime in gps_data)."
@@ -252,8 +252,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Get submitted data and check received data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=last" \
                + "&device=" \
                + device_name
@@ -279,8 +279,8 @@ if __name__ == '__main__':
     gps_data["device_name"] = device_name
     for key in data_32_keys:
         gps_data[key] = "A"*32
-    payload = {"user": Settings.username,
-               "password": Settings.password,
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices,
                "gps_data": json.dumps([gps_data])}
     location = "/submit.php"
     logging.debug("[%s] Submitting gps data (utctime not integer in gps_data)."
@@ -294,8 +294,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Get submitted data and check received data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=last" \
                + "&device=" \
                + device_name
@@ -320,8 +320,8 @@ if __name__ == '__main__':
     gps_data["utctime"] = utctime
     for key in data_32_keys:
         gps_data[key] = "A"*32
-    payload = {"user": Settings.username,
-               "password": Settings.password,
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices,
                "gps_data": json.dumps([gps_data])}
     location = "/submit.php"
     logging.debug("[%s] Submitting gps data (missing device_name in gps_data)."
@@ -335,8 +335,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Get submitted data and check received data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=last" \
                + "&device=" \
                + device_name
@@ -363,8 +363,8 @@ if __name__ == '__main__':
     gps_data["device_name"] = long_device_name
     for key in data_32_keys:
         gps_data[key] = "A"*32
-    payload = {"user": Settings.username,
-               "password": Settings.password,
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices,
                "gps_data": json.dumps([gps_data])}
     location = "/submit.php"
     logging.debug("[%s] Submitting gps data (long device_name in gps_data)."
@@ -378,8 +378,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Get submitted data and check received data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=last" \
                + "&device=" \
                + long_device_name

@@ -7,11 +7,35 @@ loglevel = INFO
 # Location of the server.
 server = https://alertr.de/chasr/
 
-# Valid username for ChasR service.
-username = email@alertr.de
-
-# Valid password for ChasR service.
-password = <SECRET>
-
 # Validate HTTPS certificate.
 valid_cert = true
+
+# Number of devices a user without any specific acl
+# is allowed to store on the server.
+num_min_devices = 2
+
+# Number of devices a user with CHASR_MID_DEVICES acl
+# is allowed to store on the server.
+num_mid_devices = 5
+
+# Number of devices a user with CHASR_MAX_DEVICES acl
+# is allowed to store on the server.
+num_max_devices = 20
+
+# Valid username for ChasR service with CHASR_MAX_DEVICES acl.
+username_max_devices = email_max@alertr.de
+
+# Valid password for ChasR service with CHASR_MAX_DEVICES acl.
+password_max_devices = <SECRET>
+
+# Valid username for ChasR service with CHASR_MID_DEVICES acl.
+username_mid_devices = email_mid@alertr.de
+
+# Valid password for ChasR service with CHASR_MID_DEVICES acl.
+password_mid_devices = <SECRET>
+
+# Valid username for ChasR service without any acl.
+username_no_acl = email_no@alertr.de
+
+# Valid password for ChasR service without any acl.
+password_no_acl = <SECRET>

@@ -13,6 +13,7 @@ abstract class ErrorCodes {
     const AUTH_ERROR = 2;
     const ILLEGAL_MSG_ERROR = 3;
     const SESSION_EXPIRED = 4;
+    const ACL_ERROR = 5;
 }
 
 abstract class AclCodes {
@@ -20,6 +21,5 @@ abstract class AclCodes {
     const CHASR_MID_DEVICES = 1;
     const CHASR_MAX_DEVICES = 2;
 }
-
 
 ?>

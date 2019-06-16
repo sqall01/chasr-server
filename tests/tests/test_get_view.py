@@ -16,12 +16,39 @@ if __name__ == '__main__':
     file_name = os.path.basename(__file__)
     parse_config()
 
+    # Get all existing devices and delete them for clean up.
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
+    location = "/get.php?mode=devices"
+    logging.debug("[%s] Getting devices data." % file_name)
+    request_result = send_post_request(location, payload, file_name)
+    if request_result["code"] != ErrorCodes.NO_ERROR:
+        logging.error("[%s] Service error code: %d."
+                      % (file_name, request_result["code"]))
+        logging.debug("[%s] Json response: %s"
+                      % (file_name, request_result))
+        sys.exit(1)
+    device_data_recv = request_result["data"]["devices"]
+    for device_dict in device_data_recv:
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices}
+        location = "/delete.php?mode=device" \
+                   + "&device=" \
+                   + device_dict["device_name"]
+        logging.debug("[%s] Deleting gps device." % file_name)
+        request_result = send_post_request(location, payload, file_name)
+        if request_result["code"] != ErrorCodes.NO_ERROR:
+            logging.error("[%s] Service error code: %d."
+                          % (file_name, request_result["code"]))
+            logging.debug("[%s] Json response: %s"
+                          % (file_name, request_result))
+            sys.exit(1)
+
     device_name = __file__
-    utctime_start = int(time.time()) - 10
-    utctime_end = utctime_start + 9
+    utctime_start = int(time.time()) - Settings.num_max_devices
     submitted_gps_data = list()
     keys = ["iv", "lat", "lon", "alt", "speed", "device_name", "utctime"]
-    for i in range(10):
+    for i in range(Settings.num_max_devices):
         iv = binascii.hexlify(os.urandom(16)).decode("utf-8")
         lat = binascii.hexlify(os.urandom(16)).decode("utf-8")
         lon = binascii.hexlify(os.urandom(16)).decode("utf-8")
@@ -38,8 +65,8 @@ if __name__ == '__main__':
         submitted_gps_data.append(gps_data)
 
         # Submit data.
-        payload = {"user": Settings.username,
-                   "password": Settings.password,
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices,
                    "gps_data": json.dumps([gps_data])}
         logging.debug("[%s] Submitting gps data." % file_name)
         request_result = send_post_request("/submit.php", payload, file_name)
@@ -50,8 +77,8 @@ if __name__ == '__main__':
                           % (file_name, request_result))
             sys.exit(1)
 
-        payload = {"user": Settings.username,
-                   "password": Settings.password}
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices}
         location = "/get.php?mode=last" \
                    + "&device=" \
                    + device_name
@@ -77,11 +104,11 @@ if __name__ == '__main__':
                 sys.exit(1)
 
     skip_start = 2
-    frame_len = 5
+    frame_len = Settings.num_max_devices - skip_start
     frame_start = utctime_start + skip_start
     frame_end = utctime_start + skip_start + frame_len - 1
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=view" \
                + "&device=" \
                + device_name \
@@ -121,8 +148,8 @@ if __name__ == '__main__':
                 sys.exit(1)
 
     # Delete device for clean up.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/delete.php?mode=device" \
                + "&device=" \
                + device_name
@@ -136,8 +163,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Get submitted data and check received data.
-    payload = {"user": Settings.username,
-               "password": Settings.password}
+    payload = {"user": Settings.username_max_devices,
+               "password": Settings.password_max_devices}
     location = "/get.php?mode=last" \
                + "&device=" \
                + device_name
