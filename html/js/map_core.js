@@ -224,7 +224,7 @@ function processResponseDevicesData() {
 
         // Check if we have received an error.
         if(response_data["code"] === 0) {
-            if(response_data["data"].length > 0) {
+            if(response_data["data"]["devices"].length > 0) {
                 processDevicesData(response_data["data"]);
             }
             else {
@@ -248,7 +248,7 @@ function processResponseData() {
 
         // Check if we have received an error.
         if(response_data["code"] === 0) {
-            if(response_data["data"].length > 0) {
+            if(response_data["data"]["locations"].length > 0) {
                 processNewGpsData(response_data["data"]);
             }
             else {
