@@ -71,7 +71,7 @@ if __name__ == '__main__':
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
-    gps_data_recv = request_result["data"][0]
+    gps_data_recv = request_result["data"]["locations"][0]
     for key in ["iv", "lat", "lon", "alt", "speed", "device_name", "utctime"]:
         if gps_data_recv[key] != gps_data[key]:
             logging.error("[%s] Key '%s' contains wrong data."
@@ -111,7 +111,7 @@ if __name__ == '__main__':
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
-    gps_data_recv = request_result["data"][0]
+    gps_data_recv = request_result["data"]["locations"][0]
     for key in ["iv", "lat", "lon", "alt", "speed", "device_name", "utctime"]:
         if gps_data_recv[key] != gps_data[key]:
             logging.error("[%s] Key '%s' contains wrong data."
@@ -151,7 +151,7 @@ if __name__ == '__main__':
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
-    gps_data_recv = request_result["data"][0]
+    gps_data_recv = request_result["data"]["locations"][0]
     for key in ["iv", "lat", "lon", "alt", "speed", "device_name", "utctime"]:
         if gps_data_recv[key] != gps_data[key]:
             logging.error("[%s] Key '%s' contains wrong data."
@@ -189,7 +189,7 @@ if __name__ == '__main__':
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
-    gps_data_recv = request_result["data"][0]
+    gps_data_recv = request_result["data"]["locations"][0]
     for key in ["iv", "lat", "lon", "alt", "speed", "device_name", "utctime"]:
         if gps_data_recv[key] != gps_data[key]:
             logging.error("[%s] Key '%s' contains wrong data."

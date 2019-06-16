@@ -240,16 +240,18 @@ if($fetched_data_result === NULL) {
 // Prepare data array to return.
 switch($_GET["mode"]) {
     case "devices":
-        $output_data = array();
+        $devices_data = array();
         while($row = $fetched_data_result->fetch_assoc()) {
             $element = array("device_name" => $row["name"]);
             // Append element to array.
-            $output_data[] = $element;
+            $devices_data[] = $element;
         }
+        $output_data = array();
+        $output_data["devices"] = $devices_data;
         break;
 
     default:
-        $output_data = array();
+        $location_data = array();
         while($row = $fetched_data_result->fetch_assoc()) {
             $element = array("device_name" => $device_name,
                 "utctime" => intval($row["utctime"]),
@@ -259,8 +261,10 @@ switch($_GET["mode"]) {
                 "alt" => $row["altitude"],
                 "speed" => $row["speed"]);
             // Append element to array.
-            $output_data[] = $element;
+            $location_data[] = $element;
         }
+        $output_data = array();
+        $output_data["locations"] = $location_data;
 }
 
 $result = array();

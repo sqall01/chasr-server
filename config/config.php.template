@@ -16,4 +16,17 @@ $config_mysql_port = 3306;
 
 // Time period in seconds until the session expires.
 $config_session_expire = 86400;
+
+// Number of devices a user without any specific acl
+// is allowed to store on the server.
+$config_chasr_num_min_devices = 2;
+
+// Number of devices a user with CHASR_MID_DEVICES acl
+// is allowed to store on the server.
+$config_chasr_num_mid_devices = 5;
+
+// Number of devices a user with CHASR_MAX_DEVICES acl
+// is allowed to store on the server.
+$config_chasr_num_max_devices = 20;
+
 ?>

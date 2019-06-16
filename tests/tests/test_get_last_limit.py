@@ -66,7 +66,7 @@ if __name__ == '__main__':
             logging.debug("[%s] Json response: %s"
                           % (file_name, request_result))
             sys.exit(1)
-        gps_data_recv = request_result["data"][0]
+        gps_data_recv = request_result["data"]["locations"][0]
         for key in keys:
             if gps_data_recv[key] != gps_data[key]:
                 logging.error("[%s] Key '%s' contains wrong data."
@@ -93,8 +93,8 @@ if __name__ == '__main__':
                       % (file_name, request_result))
         sys.exit(1)
     submitted_len = len(submitted_gps_data)-1
-    for i in range(len(request_result["data"])):
-        gps_data_recv = request_result["data"][i]
+    for i in range(len(request_result["data"]["locations"])):
+        gps_data_recv = request_result["data"]["locations"][i]
         for key in keys:
             if gps_data_recv[key] != submitted_gps_data[submitted_len-i][key]:
                 logging.error("[%s] Key '%s' contains wrong data."

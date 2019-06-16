@@ -15,4 +15,11 @@ abstract class ErrorCodes {
     const SESSION_EXPIRED = 4;
 }
 
+abstract class AclCodes {
+    const ALERTR_NOTIFICATION_CHANNEL = 0;
+    const CHASR_MID_DEVICES = 1;
+    const CHASR_MAX_DEVICES = 2;
+}
+
+
 ?>

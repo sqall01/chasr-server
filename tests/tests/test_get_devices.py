@@ -19,8 +19,36 @@ if __name__ == '__main__':
 
     num_devices = 10
     device_name = __file__
+
+    # Get all existing devices and delete them for clean up.
+    payload = {"user": Settings.username,
+               "password": Settings.password}
+    location = "/get.php?mode=devices"
+    logging.debug("[%s] Getting devices data." % file_name)
+    request_result = send_post_request(location, payload, file_name)
+    if request_result["code"] != ErrorCodes.NO_ERROR:
+        logging.error("[%s] Service error code: %d."
+                      % (file_name, request_result["code"]))
+        logging.debug("[%s] Json response: %s"
+                      % (file_name, request_result))
+        sys.exit(1)
+    device_data_recv = request_result["data"]["devices"]
+    for device_dict in device_data_recv:
+        payload = {"user": Settings.username,
+                   "password": Settings.password}
+        location = "/delete.php?mode=device" \
+                   + "&device=" \
+                   + device_dict["device_name"]
+        logging.debug("[%s] Deleting gps device." % file_name)
+        request_result = send_post_request(location, payload, file_name)
+        if request_result["code"] != ErrorCodes.NO_ERROR:
+            logging.error("[%s] Service error code: %d."
+                          % (file_name, request_result["code"]))
+            logging.debug("[%s] Json response: %s"
+                          % (file_name, request_result))
+            sys.exit(1)
+
     utctime_start = int(time.time()) - num_devices
-    utctime_end = utctime_start + 9
     submitted_gps_data = list()
     keys = ["iv", "lat", "lon", "alt", "speed", "device_name", "utctime"]
     for i in range(num_devices):
@@ -65,7 +93,7 @@ if __name__ == '__main__':
                       % (file_name, request_result))
         sys.exit(1)
 
-    device_data_recv = request_result["data"]
+    device_data_recv = request_result["data"]["devices"]
 
     if len(device_data_recv) != num_devices:
         logging.error("[%s] Number of devices wrong."
@@ -121,7 +149,7 @@ if __name__ == '__main__':
         logging.debug("[%s] Json response: %s"
                       % (file_name, request_result))
         sys.exit(1)
-    if len(request_result["data"]) > 0:
+    if len(request_result["data"]["devices"]) > 0:
         logging.error("[%s] Response contains data. "
                       % file_name
                       + "Deleting device failed.")
