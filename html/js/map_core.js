@@ -128,8 +128,8 @@ async function processNewGpsData(new_gps_data) {
 
         // Store encrypted GPS data as long as we do not
         // have any key to decrypt.
-        for(var i = 0; i < new_gps_data.length; i++) {
-            global_enc_gps_data.push(new_gps_data[i]);
+        for(var i = 0; i < new_gps_data["locations"].length; i++) {
+            global_enc_gps_data.push(new_gps_data["locations"][i]);
         }
 
         return;
@@ -140,14 +140,14 @@ async function processNewGpsData(new_gps_data) {
     // currently received data before processing it.
     if(global_enc_gps_data.length > 0) {
         for(var i = global_enc_gps_data.length-1; i >= 0; i--) {
-            new_gps_data.unshift(global_enc_gps_data[i]);
+            new_gps_data["locations"].unshift(global_enc_gps_data[i]);
         }
         global_enc_gps_data = [];
     }
 
     // Process received gps data.
-    for(var i = 0; i < new_gps_data.length; i++) {
-        var new_data = new_gps_data[i];
+    for(var i = 0; i < new_gps_data["locations"].length; i++) {
+        var new_data = new_gps_data["locations"][i];
 
         // Only proceed if received gps position is
         // newer than our last known position.

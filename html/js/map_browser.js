@@ -50,8 +50,8 @@ function showDevicesData(devices_data) {
     // Add all received options.
     var device_exists = false;
     var device_option;
-    for(var i = 0; i < devices_data.length; i++) {
-        var new_device = devices_data[i];
+    for(var i = 0; i < devices_data["devices"].length; i++) {
+        var new_device = devices_data["devices"][i];
 
         var option = document.createElement("option");
         option.text = new_device["device_name"];
