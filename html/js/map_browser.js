@@ -69,6 +69,12 @@ function showDevicesData(devices_data) {
         device_option.selected = "selected";
     }
 
+    // Get available device slots on the server and display them.
+    var device_slots = devices_data["avail_slots"];
+    var left_device_slots = device_slots - devices_data["devices"].length;
+    var device_slots_p = document.getElementById("device_slots");
+    device_slots_p.textContent = "Device slots left: " + left_device_slots
+
     show();
 }
 
