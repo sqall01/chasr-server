@@ -237,6 +237,24 @@ if($fetched_data_result === NULL) {
     die(json_encode($result));
 }
 
+// Get users acls.
+$acls = get_user_acl($mysqli, $user_id);
+if($acls === -1) {
+    $result = array();
+    $result["code"] = ErrorCodes::DATABASE_ERROR;
+    $result["msg"] = "Error while fetching user acls.";
+    die(json_encode($result));
+}
+
+// Determine how many device slots a user has.
+$num_device_slots = $config_chasr_num_min_devices;
+if(in_array(AclCodes::CHASR_MID_DEVICES, $acls)) {
+    $num_device_slots = $config_chasr_num_mid_devices;
+}
+if(in_array(AclCodes::CHASR_MAX_DEVICES, $acls)) {
+    $num_device_slots = $config_chasr_num_max_devices;
+}
+
 // Prepare data array to return.
 switch($_GET["mode"]) {
     case "devices":
@@ -248,6 +266,7 @@ switch($_GET["mode"]) {
         }
         $output_data = array();
         $output_data["devices"] = $devices_data;
+        $output_data["avail_slots"] = $num_device_slots;
         break;
 
     default:
