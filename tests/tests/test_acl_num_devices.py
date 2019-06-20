@@ -68,7 +68,7 @@ if __name__ == '__main__':
 
         device_name = __file__
         utctime_start = int(time.time()) - Settings.num_min_devices
-        submitted_gps_data = list()
+        added_device_names = list()
         for i in range(num_devices):
             iv = binascii.hexlify(os.urandom(16)).decode("utf-8")
             lat = binascii.hexlify(os.urandom(16)).decode("utf-8")
@@ -77,6 +77,7 @@ if __name__ == '__main__':
             speed = binascii.hexlify(os.urandom(16)).decode("utf-8")
             utctime = utctime_start + i
             curr_device_name = device_name + "_%09d" % i
+            added_device_names.append(curr_device_name)
             gps_data = {"iv": iv,
                         "device_name": curr_device_name,
                         "lat": lat,
@@ -164,6 +165,93 @@ if __name__ == '__main__':
         payload = {"user": username,
                    "password": password,
                    "gps_data": json.dumps([gps_data])}
+        logging.debug("[%s] Submitting gps data." % file_name)
+        request_result = send_post_request("/submit.php", payload, file_name)
+        if request_result["code"] != ErrorCodes.ACL_ERROR:
+            logging.error("[%s] Used username '%s'."
+                          % (file_name, username))
+            logging.error("[%s] ACL error expected. Service error code: %d."
+                          % (file_name, request_result["code"]))
+            logging.debug("[%s] Json response: %s"
+                          % (file_name, request_result))
+            sys.exit(1)
+
+        # Get devices and check additional device was not added.
+        payload = {"user": username,
+                   "password": password}
+        location = "/get.php?mode=devices"
+        logging.debug("[%s] Getting devices data." % file_name)
+        request_result = send_post_request(location, payload, file_name)
+        if request_result["code"] != ErrorCodes.NO_ERROR:
+            logging.error("[%s] Used username '%s'."
+                          % (file_name, username))
+            logging.error("[%s] Service error code: %d."
+                          % (file_name, request_result["code"]))
+            logging.debug("[%s] Json response: %s"
+                          % (file_name, request_result))
+            sys.exit(1)
+
+        device_data_recv = request_result["data"]["devices"]
+
+        if len(device_data_recv) != num_devices:
+            logging.error("[%s] Used username '%s'."
+                          % (file_name, username))
+            logging.error("[%s] Number of devices wrong "
+                          % file_name
+                          + "after forbidden submission.")
+            logging.error("[%s] Allowed devices %d and received %d."
+                          % (file_name, num_devices, len(device_data_recv)))
+            logging.debug("[%s] Json response: %s"
+                          % (file_name, request_result))
+            sys.exit(1)
+
+        for device_recv in device_data_recv:
+            if device_recv["device_name"] == forbidden_device_name:
+                logging.error("[%s] Used username '%s'."
+                              % (file_name, username))
+                logging.error("[%s] Forbidden device '%s' received."
+                              % (file_name, forbidden_device_name))
+                logging.debug("[%s] Json response: %s"
+                              % (file_name, request_result))
+                sys.exit(1)
+
+        # Do mixed submission (existing devices + forbidden one).
+        all_gps_data = list()
+        for curr_device_name in added_device_names:
+            iv = binascii.hexlify(os.urandom(16)).decode("utf-8")
+            lat = binascii.hexlify(os.urandom(16)).decode("utf-8")
+            lon = binascii.hexlify(os.urandom(16)).decode("utf-8")
+            alt = binascii.hexlify(os.urandom(16)).decode("utf-8")
+            speed = binascii.hexlify(os.urandom(16)).decode("utf-8")
+            utctime = utctime_start + num_devices
+            gps_data = {"iv": iv,
+                        "device_name": curr_device_name,
+                        "lat": lat,
+                        "lon": lon,
+                        "alt": alt,
+                        "speed": speed,
+                        "utctime": utctime}
+            all_gps_data.append(gps_data)
+        iv = binascii.hexlify(os.urandom(16)).decode("utf-8")
+        lat = binascii.hexlify(os.urandom(16)).decode("utf-8")
+        lon = binascii.hexlify(os.urandom(16)).decode("utf-8")
+        alt = binascii.hexlify(os.urandom(16)).decode("utf-8")
+        speed = binascii.hexlify(os.urandom(16)).decode("utf-8")
+        utctime = utctime_start + num_devices
+        forbidden_device_name = device_name + "_%09d" % num_devices
+        gps_data = {"iv": iv,
+                    "device_name": forbidden_device_name,
+                    "lat": lat,
+                    "lon": lon,
+                    "alt": alt,
+                    "speed": speed,
+                    "utctime": utctime}
+        all_gps_data.append(gps_data)
+
+        # Submit data.
+        payload = {"user": username,
+                   "password": password,
+                   "gps_data": json.dumps(all_gps_data)}
         logging.debug("[%s] Submitting gps data." % file_name)
         request_result = send_post_request("/submit.php", payload, file_name)
         if request_result["code"] != ErrorCodes.ACL_ERROR:
