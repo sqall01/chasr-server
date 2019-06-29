@@ -3,7 +3,8 @@ var request_devices = new XMLHttpRequest();
 var global_gps_data = [];
 var global_enc_gps_data = [];
 var secret_hash;
-var final_key;
+var final_aes_key;
+var final_hmac_key;
 var store_secret = false;
 var map;
 var vector_layer;
@@ -25,6 +26,14 @@ async function createAESKey(secret_hash) {
                                           ["decrypt"]);
 }
 
+async function createHMACKey(secret_hash) {
+    return window.crypto.subtle.importKey("raw",
+                                          secret_hash,
+                                          {name:"HMAC", "hash":"SHA-256"},
+                                          false,
+                                          ["verify"]);
+}
+
 async function decryptData(iv_var, dec_key, enc_data) {
     return window.crypto.subtle.decrypt({name: "AES-CBC",
                                         iv: iv_var,},
@@ -32,11 +41,19 @@ async function decryptData(iv_var, dec_key, enc_data) {
                                         enc_data);
 }
 
+async function verifyData(hmac_key, authtag, data) {
+    return window.crypto.subtle.verify("HMAC",
+                                     hmac_key,
+                                     authtag,
+                                     data);
+}
+
 // Clears the secret and key.
 function clearSecret() {
     localStorage.removeItem("secret_hash");
     secret_hash = null;
-    final_key = null;
+    final_aes_key = null;
+    final_hmac_key = null;
 
     show();
 }
@@ -64,13 +81,13 @@ async function setSecretHash(secret) {
     }
     secret_hash = new Uint8Array(hash);
 
-    // Set AES key.
-    await setAESKey();
+    // Set AES and HMAC key.
+    await setCryptoKey();
 
     return true;
 }
 
-async function setAESKey() {
+async function setCryptoKey() {
 
     // Load stored secret hash if it exists
     // and if no secret hash was set yet.
@@ -90,7 +107,8 @@ async function setAESKey() {
     // If we already now the hash of the secret, just create the AES key.
     else {
         try {
-            final_key = await createAESKey(secret_hash);
+            final_aes_key = await createAESKey(secret_hash);
+            final_hmac_key = await createHMACKey(secret_hash);
         }
         catch(err) {
             console_error(err.message);
@@ -122,7 +140,7 @@ function byteArrayToHexstring(byte_array) {
 async function processNewGpsData(new_gps_data) {
 
     // If the key is not available yet, return.
-    if(!final_key) {
+    if(!final_aes_key || !final_hmac_key) {
         console_log("Decryption key not yet available.");
         console_log("Did you set a secret?");
 
@@ -161,6 +179,8 @@ async function processNewGpsData(new_gps_data) {
         // Create new decrypted gps object.
         var new_dec_data = {};
         new_dec_data["utctime"] = new_data["utctime"];
+        var str_to_verify = new_data["device_name"];
+        str_to_verify += new_data["utctime"].toString();
         var curr_iv = hexstringToByteArray(new_data["iv"]);
         var keys = ["lat", "lon", "alt", "speed"];
         for(var j = 0; j < keys.length; j++) {
@@ -170,23 +190,43 @@ async function processNewGpsData(new_gps_data) {
             var data_to_dec = hexstringToByteArray(new_data[key]);
             try {
                 var temp_data = await decryptData(curr_iv,
-                                                  final_key,
+                                                  final_aes_key,
                                                   data_to_dec);
             }
             catch(err) {
                 console_error(err.message);
                 console_error("Did you set the correct secret?");
+                break;
             }
             var dec_data = new Uint8Array(temp_data);
             var temp_str = "";
             for(var k = 0; k < dec_data.length; k++) {
                 temp_str += String.fromCharCode(dec_data[k]);
             }
+            str_to_verify += temp_str;
             var final_float = parseFloat(temp_str);
 
             new_dec_data[key] = final_float;
         }
 
+        // Authenticate received GPS data.
+        var data_to_verify = new TextEncoder("utf-8").encode(str_to_verify);
+        var authtag = hexstringToByteArray(new_data["authtag"]);
+        try {
+            var is_auth = await verifyData(final_hmac_key,
+                                           authtag,
+                                           data_to_verify);
+            if(!is_auth) {
+                console_error("Authentication of GPS data failed. "
+                              + "It seems something nasty is going on.");
+                continue;
+            }
+        }
+        catch(err) {
+            console_error(err.message);
+            console_error("Did you set the correct secret?");
+        }
+        
         // Add new gps position to our global gps data.
         global_gps_data.push(new_dec_data);
     }
@@ -224,12 +264,10 @@ function processResponseDevicesData() {
 
         // Check if we have received an error.
         if(response_data["code"] === 0) {
-            if(response_data["data"]["devices"].length > 0) {
-                processDevicesData(response_data["data"]);
-            }
-            else {
+            if(response_data["data"]["devices"].length == 0) {
                 console_log("No devices available.");
             }
+            processDevicesData(response_data["data"]);
         }
         else {
             console_error("Received error code '"

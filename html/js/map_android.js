@@ -69,7 +69,7 @@ function show() {
 function init() {
     parseHashVars();
     createNewMap();
-    setAESKey();
+    setCryptoKey();
     
     if(!mode) {
         console_log("Please select a mode.");
