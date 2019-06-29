@@ -50,13 +50,13 @@ if __name__ == '__main__':
 
     utctime_start = int(time.time()) - num_devices
     submitted_gps_data = list()
-    keys = ["iv", "lat", "lon", "alt", "speed", "device_name", "utctime"]
     for i in range(num_devices):
         iv = binascii.hexlify(os.urandom(16)).decode("utf-8")
         lat = binascii.hexlify(os.urandom(16)).decode("utf-8")
         lon = binascii.hexlify(os.urandom(16)).decode("utf-8")
         alt = binascii.hexlify(os.urandom(16)).decode("utf-8")
         speed = binascii.hexlify(os.urandom(16)).decode("utf-8")
+        authtag = binascii.hexlify(os.urandom(32)).decode("utf-8")
         utctime = utctime_start + i
         curr_device_name = device_name + "_%09d" % i
         gps_data = {"iv": iv,
@@ -65,6 +65,7 @@ if __name__ == '__main__':
                     "lon": lon,
                     "alt": alt,
                     "speed": speed,
+                    "authtag": authtag,
                     "utctime": utctime}
 
         # Submit data.

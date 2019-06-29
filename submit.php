@@ -145,7 +145,8 @@ function add_gps_data($mysqli, $user_id, $gps_data) {
             . "latitude,"
             . "longitude,"
             . "altitude,"
-            . "speed) "
+            . "speed, "
+            . "authtag) "
             . " VALUES ("
             . intval($user_id) . ","
             . intval($device_id) .","
@@ -154,7 +155,8 @@ function add_gps_data($mysqli, $user_id, $gps_data) {
             . "'" . $mysqli->real_escape_string($data["lat"]) . "',"
             . "'" . $mysqli->real_escape_string($data["lon"]) . "',"
             . "'" . $mysqli->real_escape_string($data["alt"]) . "',"
-            . "'" . $mysqli->real_escape_string($data["speed"]) . "'"
+            . "'" . $mysqli->real_escape_string($data["speed"]) . "',"
+            . "'" . $mysqli->real_escape_string($data["authtag"]) . "'"
             . ")";
 
         $result = $mysqli->query($insert_gps);
@@ -187,7 +189,8 @@ function check_gps_data($mysqli, $gps_data) {
                       "lat",
                       "lon",
                       "alt",
-                      "speed") as $key) {
+                      "speed",
+                      "authtag") as $key) {
 
             if(!array_key_exists($key, $data)) {
                 return array(FALSE, "Key " . $key . " needed.");
@@ -210,6 +213,11 @@ function check_gps_data($mysqli, $gps_data) {
         // Check length of device_name.
         if(strlen($data["device_name"]) > 255) {
             return array(FALSE, "device_name longer than 255 characters.");
+        }
+
+        // Check length of authtag.
+        if(strlen($data["authtag"]) != 64) {
+            return array(FALSE, "authtag size needs to be 64.");
         }
 
         // Check integer values.

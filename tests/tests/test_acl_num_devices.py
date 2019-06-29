@@ -75,6 +75,7 @@ if __name__ == '__main__':
             lon = binascii.hexlify(os.urandom(16)).decode("utf-8")
             alt = binascii.hexlify(os.urandom(16)).decode("utf-8")
             speed = binascii.hexlify(os.urandom(16)).decode("utf-8")
+            authtag = binascii.hexlify(os.urandom(32)).decode("utf-8")
             utctime = utctime_start + i
             curr_device_name = device_name + "_%09d" % i
             added_device_names.append(curr_device_name)
@@ -84,6 +85,7 @@ if __name__ == '__main__':
                         "lon": lon,
                         "alt": alt,
                         "speed": speed,
+                        "authtag": authtag,
                         "utctime": utctime}
 
             # Submit data.
@@ -151,6 +153,7 @@ if __name__ == '__main__':
         lon = binascii.hexlify(os.urandom(16)).decode("utf-8")
         alt = binascii.hexlify(os.urandom(16)).decode("utf-8")
         speed = binascii.hexlify(os.urandom(16)).decode("utf-8")
+        authtag = binascii.hexlify(os.urandom(32)).decode("utf-8")
         utctime = utctime_start + num_devices
         forbidden_device_name = device_name + "_%09d" % num_devices
         gps_data = {"iv": iv,
@@ -159,6 +162,7 @@ if __name__ == '__main__':
                     "lon": lon,
                     "alt": alt,
                     "speed": speed,
+                    "authtag": authtag,
                     "utctime": utctime}
 
         # Submit data.
@@ -223,6 +227,7 @@ if __name__ == '__main__':
             lon = binascii.hexlify(os.urandom(16)).decode("utf-8")
             alt = binascii.hexlify(os.urandom(16)).decode("utf-8")
             speed = binascii.hexlify(os.urandom(16)).decode("utf-8")
+            authtag = binascii.hexlify(os.urandom(32)).decode("utf-8")
             utctime = utctime_start + num_devices
             gps_data = {"iv": iv,
                         "device_name": curr_device_name,
@@ -230,6 +235,7 @@ if __name__ == '__main__':
                         "lon": lon,
                         "alt": alt,
                         "speed": speed,
+                        "authtag": authtag,
                         "utctime": utctime}
             all_gps_data.append(gps_data)
         iv = binascii.hexlify(os.urandom(16)).decode("utf-8")
@@ -237,6 +243,7 @@ if __name__ == '__main__':
         lon = binascii.hexlify(os.urandom(16)).decode("utf-8")
         alt = binascii.hexlify(os.urandom(16)).decode("utf-8")
         speed = binascii.hexlify(os.urandom(16)).decode("utf-8")
+        authtag = binascii.hexlify(os.urandom(32)).decode("utf-8")
         utctime = utctime_start + num_devices
         forbidden_device_name = device_name + "_%09d" % num_devices
         gps_data = {"iv": iv,
@@ -245,6 +252,7 @@ if __name__ == '__main__':
                     "lon": lon,
                     "alt": alt,
                     "speed": speed,
+                    "authtag": authtag,
                     "utctime": utctime}
         all_gps_data.append(gps_data)
 

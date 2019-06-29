@@ -47,13 +47,14 @@ if __name__ == '__main__':
     device_name = __file__
     utctime_start = int(time.time()) - Settings.num_max_devices
     submitted_gps_data = list()
-    keys = ["iv", "lat", "lon", "alt", "speed", "device_name", "utctime"]
+    keys = ["iv", "lat", "lon", "alt", "speed", "authtag", "device_name", "utctime"]
     for i in range(Settings.num_max_devices):
         iv = binascii.hexlify(os.urandom(16)).decode("utf-8")
         lat = binascii.hexlify(os.urandom(16)).decode("utf-8")
         lon = binascii.hexlify(os.urandom(16)).decode("utf-8")
         alt = binascii.hexlify(os.urandom(16)).decode("utf-8")
         speed = binascii.hexlify(os.urandom(16)).decode("utf-8")
+        authtag = binascii.hexlify(os.urandom(32)).decode("utf-8")
         utctime = utctime_start + i
         gps_data = {"iv": iv,
                     "device_name": device_name,
@@ -61,6 +62,7 @@ if __name__ == '__main__':
                     "lon": lon,
                     "alt": alt,
                     "speed": speed,
+                    "authtag": authtag,
                     "utctime": utctime}
         submitted_gps_data.append(gps_data)
 

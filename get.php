@@ -133,7 +133,8 @@ switch($_GET["mode"]) {
                       . "latitude,"
                       . "longitude,"
                       . "altitude,"
-                      . "speed "
+                      . "speed, "
+                      . "authtag "
                       . "FROM chasr_gps "
                       . "WHERE users_id="
                       . intval($user_id)
@@ -186,7 +187,8 @@ switch($_GET["mode"]) {
                       . "latitude,"
                       . "longitude,"
                       . "altitude,"
-                      . "speed "
+                      . "speed, "
+                      . "authtag "
                       . "FROM chasr_gps "
                       . "WHERE users_id="
                       . intval($user_id)
@@ -273,12 +275,13 @@ switch($_GET["mode"]) {
         $location_data = array();
         while($row = $fetched_data_result->fetch_assoc()) {
             $element = array("device_name" => $device_name,
-                "utctime" => intval($row["utctime"]),
-                "iv" => $row["iv"],
-                "lat" => $row["latitude"],
-                "lon" => $row["longitude"],
-                "alt" => $row["altitude"],
-                "speed" => $row["speed"]);
+                             "utctime" => intval($row["utctime"]),
+                             "iv" => $row["iv"],
+                             "lat" => $row["latitude"],
+                             "lon" => $row["longitude"],
+                             "alt" => $row["altitude"],
+                             "speed" => $row["speed"],
+                             "authtag" => $row["authtag"]);
             // Append element to array.
             $location_data[] = $element;
         }

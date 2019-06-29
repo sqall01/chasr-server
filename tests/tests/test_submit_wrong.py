@@ -96,12 +96,17 @@ if __name__ == '__main__':
         sys.exit(1)
 
     data_32_keys = ["iv", "lat", "lon", "alt", "speed"]
+    data_64_keys = ["authtag"]
+
+    # Check 32 byte fields.
     for curr_key in data_32_keys:
 
         # Missing key in gps_data.
         gps_data = dict()
         gps_data["utctime"] = utctime
         gps_data["device_name"] = device_name
+        for key in data_64_keys:
+            gps_data[key] = "A"*64
         for key in data_32_keys:
             if key == curr_key:
                 continue
@@ -146,6 +151,8 @@ if __name__ == '__main__':
         gps_data = dict()
         gps_data["utctime"] = utctime
         gps_data["device_name"] = device_name
+        for key in data_64_keys:
+            gps_data[key] = "A"*64
         for key in data_32_keys:
             if key == curr_key:
                 gps_data[key] = "B"*31
@@ -191,6 +198,8 @@ if __name__ == '__main__':
         gps_data = dict()
         gps_data["utctime"] = utctime
         gps_data["device_name"] = device_name
+        for key in data_64_keys:
+            gps_data[key] = "A"*64
         for key in data_32_keys:
             if key == curr_key:
                 gps_data[key] = "B"*33
@@ -232,11 +241,156 @@ if __name__ == '__main__':
                           % (file_name, request_result))
             sys.exit(1)
 
+    # Check 64 byte fields.
+    for curr_key in data_64_keys:
+
+        # Missing key in gps_data.
+        gps_data = dict()
+        gps_data["utctime"] = utctime
+        gps_data["device_name"] = device_name
+        for key in data_32_keys:
+            gps_data[key] = "A"*32
+        for key in data_64_keys:
+            if key == curr_key:
+                continue
+            gps_data[key] = "A"*64
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices,
+                   "gps_data": json.dumps([gps_data])}
+        location = "/submit.php"
+        logging.debug("[%s] Submitting gps data (missing %s in gps_data)."
+                      % (curr_key, file_name))
+        request_result = send_post_request(location, payload, file_name)
+        if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
+            logging.error("[%s] Service error code: %d."
+                          % (file_name, request_result["code"]))
+            logging.debug("[%s] Json response: %s"
+                          % (file_name, request_result))
+            sys.exit(1)
+
+        # Get submitted data and check received data.
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices}
+        location = "/get.php?mode=last" \
+                   + "&device=" \
+                   + device_name
+        logging.debug("[%s] Getting gps data." % file_name)
+        request_result = send_post_request(location, payload, file_name)
+        if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
+            logging.error("[%s] Service error code: %d."
+                          % (file_name, request_result["code"]))
+            logging.debug("[%s] Json response: %s"
+                          % (file_name, request_result))
+            sys.exit(1)
+        if request_result["msg"] != "Device does not exist.":
+            logging.error("[%s] Response contains wrong error message. "
+                          % file_name
+                          + "Server submitted data.")
+            logging.debug("[%s] Json response: %s"
+                          % (file_name, request_result))
+            sys.exit(1)
+
+        # Short key in gps_data.
+        gps_data = dict()
+        gps_data["utctime"] = utctime
+        gps_data["device_name"] = device_name
+        for key in data_32_keys:
+            gps_data[key] = "A"*32
+        for key in data_64_keys:
+            if key == curr_key:
+                gps_data[key] = "B"*63
+            else:
+                gps_data[key] = "A"*64
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices,
+                   "gps_data": json.dumps([gps_data])}
+        location = "/submit.php"
+        logging.debug("[%s] Submitting gps data (short %s in gps_data)."
+                      % (curr_key, file_name))
+        request_result = send_post_request(location, payload, file_name)
+        if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
+            logging.error("[%s] Service error code: %d."
+                          % (file_name, request_result["code"]))
+            logging.debug("[%s] Json response: %s"
+                          % (file_name, request_result))
+            sys.exit(1)
+
+        # Get submitted data and check received data.
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices}
+        location = "/get.php?mode=last" \
+                   + "&device=" \
+                   + device_name
+        logging.debug("[%s] Getting gps data." % file_name)
+        request_result = send_post_request(location, payload, file_name)
+        if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
+            logging.error("[%s] Service error code: %d."
+                          % (file_name, request_result["code"]))
+            logging.debug("[%s] Json response: %s"
+                          % (file_name, request_result))
+            sys.exit(1)
+        if request_result["msg"] != "Device does not exist.":
+            logging.error("[%s] Response contains wrong error message. "
+                          % file_name
+                          + "Server submitted data.")
+            logging.debug("[%s] Json response: %s"
+                          % (file_name, request_result))
+            sys.exit(1)
+
+        # Long key in gps_data.
+        gps_data = dict()
+        gps_data["utctime"] = utctime
+        gps_data["device_name"] = device_name
+        for key in data_32_keys:
+            gps_data[key] = "A"*32
+        for key in data_64_keys:
+            if key == curr_key:
+                gps_data[key] = "B"*65
+            else:
+                gps_data[key] = "A"*64
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices,
+                   "gps_data": json.dumps([gps_data])}
+        location = "/submit.php"
+        logging.debug("[%s] Submitting gps data (long %s in gps_data)."
+                      % (curr_key, file_name))
+        request_result = send_post_request(location, payload, file_name)
+        if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
+            logging.error("[%s] Service error code: %d."
+                          % (file_name, request_result["code"]))
+            logging.debug("[%s] Json response: %s"
+                          % (file_name, request_result))
+            sys.exit(1)
+
+        # Get submitted data and check received data.
+        payload = {"user": Settings.username_max_devices,
+                   "password": Settings.password_max_devices}
+        location = "/get.php?mode=last" \
+                   + "&device=" \
+                   + device_name
+        logging.debug("[%s] Getting gps data." % file_name)
+        request_result = send_post_request(location, payload, file_name)
+        if request_result["code"] != ErrorCodes.ILLEGAL_MSG_ERROR:
+            logging.error("[%s] Service error code: %d."
+                          % (file_name, request_result["code"]))
+            logging.debug("[%s] Json response: %s"
+                          % (file_name, request_result))
+            sys.exit(1)
+        if request_result["msg"] != "Device does not exist.":
+            logging.error("[%s] Response contains wrong error message. "
+                          % file_name
+                          + "Server submitted data.")
+            logging.debug("[%s] Json response: %s"
+                          % (file_name, request_result))
+            sys.exit(1)
+
     # Missing utctime in gps_data.
     gps_data = dict()
     gps_data["device_name"] = device_name
     for key in data_32_keys:
         gps_data[key] = "A"*32
+    for key in data_64_keys:
+        gps_data[key] = "A"*64
     payload = {"user": Settings.username_max_devices,
                "password": Settings.password_max_devices,
                "gps_data": json.dumps([gps_data])}
@@ -279,6 +433,8 @@ if __name__ == '__main__':
     gps_data["device_name"] = device_name
     for key in data_32_keys:
         gps_data[key] = "A"*32
+    for key in data_64_keys:
+        gps_data[key] = "A"*64
     payload = {"user": Settings.username_max_devices,
                "password": Settings.password_max_devices,
                "gps_data": json.dumps([gps_data])}
@@ -320,6 +476,8 @@ if __name__ == '__main__':
     gps_data["utctime"] = utctime
     for key in data_32_keys:
         gps_data[key] = "A"*32
+    for key in data_64_keys:
+        gps_data[key] = "A"*64
     payload = {"user": Settings.username_max_devices,
                "password": Settings.password_max_devices,
                "gps_data": json.dumps([gps_data])}
@@ -363,6 +521,8 @@ if __name__ == '__main__':
     gps_data["device_name"] = long_device_name
     for key in data_32_keys:
         gps_data[key] = "A"*32
+    for key in data_64_keys:
+        gps_data[key] = "A"*64
     payload = {"user": Settings.username_max_devices,
                "password": Settings.password_max_devices,
                "gps_data": json.dumps([gps_data])}

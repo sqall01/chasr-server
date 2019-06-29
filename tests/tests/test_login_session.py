@@ -21,6 +21,7 @@ if __name__ == '__main__':
     session = requests.Session()
 
     device_name = __file__
+    num_devices = Settings.num_max_devices
 
     # Login for session
     payload = {"user": Settings.username_max_devices,
@@ -44,15 +45,16 @@ if __name__ == '__main__':
                       % (file_name, request_result))
         sys.exit(1)
 
-    utctime_start = int(time.time()) - 10
+    utctime_start = int(time.time()) - num_devices
     submitted_gps_data = list()
-    keys = ["iv", "lat", "lon", "alt", "speed", "device_name", "utctime"]
-    for i in range(10):
+    keys = ["iv", "lat", "lon", "alt", "speed", "authtag", "device_name", "utctime"]
+    for i in range(num_devices):
         iv = binascii.hexlify(os.urandom(16)).decode("utf-8")
         lat = binascii.hexlify(os.urandom(16)).decode("utf-8")
         lon = binascii.hexlify(os.urandom(16)).decode("utf-8")
         alt = binascii.hexlify(os.urandom(16)).decode("utf-8")
         speed = binascii.hexlify(os.urandom(16)).decode("utf-8")
+        authtag = binascii.hexlify(os.urandom(32)).decode("utf-8")
         utctime = utctime_start + i
         gps_data = {"iv": iv,
                     "device_name": device_name,
@@ -60,6 +62,7 @@ if __name__ == '__main__':
                     "lon": lon,
                     "alt": alt,
                     "speed": speed,
+                    "authtag": authtag,
                     "utctime": utctime}
         submitted_gps_data.append(gps_data)
 

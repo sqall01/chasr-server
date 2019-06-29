@@ -25,6 +25,7 @@ if __name__ == '__main__':
         lon = binascii.hexlify(os.urandom(16)).decode("utf-8")
         alt = binascii.hexlify(os.urandom(16)).decode("utf-8")
         speed = binascii.hexlify(os.urandom(16)).decode("utf-8")
+        authtag = binascii.hexlify(os.urandom(32)).decode("utf-8")
         utctime = int(time.time()) - (Settings.num_max_devices-i)
         gps_data = {"iv": iv,
                     "device_name": device_name,
@@ -32,6 +33,7 @@ if __name__ == '__main__':
                     "lon": lon,
                     "alt": alt,
                     "speed": speed,
+                    "authtag": authtag,
                     "utctime": utctime}
 
         payload = {"user": Settings.username_max_devices,
@@ -61,7 +63,7 @@ if __name__ == '__main__':
                           % (file_name, request_result))
             sys.exit(1)
         gps_data_recv = request_result["data"]["locations"][0]
-        keys = ["iv", "lat", "lon", "alt", "speed", "device_name", "utctime"]
+        keys = ["iv", "lat", "lon", "alt", "speed", "authtag", "device_name", "utctime"]
         for key in keys:
             if gps_data_recv[key] != gps_data[key]:
                 logging.error("[%s] Key '%s' contains wrong data."
