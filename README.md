@@ -5,8 +5,8 @@
 The ChasR GPS Tracking System is separated into multiple components:
 
 * ChasR Server ([Github](https://github.com/sqall01/chasr-server) | [Service](https://alertr.de/chasr))
-* ChasR Android Logger ([Github](https://github.com/sqall01/chasr-android-logger))
-* ChasR Android Map ([Github](https://github.com/sqall01/chasr-android-map))
+* ChasR Android Logger ([Github](https://github.com/sqall01/chasr-android-logger) | [Google Play](https://play.google.com/store/apps/details?id=de.alertr.chasr))
+* ChasR Android Map ([Github](https://github.com/sqall01/chasr-android-map) | [Google Play](https://play.google.com/store/apps/details?id=de.alertr.chasrmap))
 * ChasR Linux Logger ([Github](https://github.com/sqall01/chasr-linux-logger))
 
 Additionally, the ChasR GPS Tracking System can be used as part of the [AlertR Alarm and Monitoring System](https://alertr.de) (for example as a car alarm system).
