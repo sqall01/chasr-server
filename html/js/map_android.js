@@ -48,22 +48,6 @@ function showStatusMode() {
 function showStatusSecret() {
 }
 
-// Initialize page.
-function init() {
-    parseHashVars();
-    createNewMap();
-    
-    if(!mode) {
-        console_log("Please select a mode.");
-    }
-    if(!device_name) {
-        console_log("Please select a device.");
-    }
-    if(!secret_hash) {
-        console_log("Please set a secret.");
-    }
-}
-
 function show() {
 
     // Clear timer if user had changed something in between.
@@ -79,6 +63,22 @@ function show() {
             requestViewData();
         }
     }  
+}
+
+// Initialize page.
+function init() {
+    parseHashVars();
+    createNewMap();
+    
+    if(!mode) {
+        console_log("Please select a mode.");
+    }
+    if(!device_name) {
+        console_log("Please select a device.");
+    }
+    if(!secret_hash) {
+        console_log("Please set a secret.");
+    }
 }
 
 init();
