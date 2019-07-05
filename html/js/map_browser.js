@@ -217,7 +217,6 @@ function init() {
     parseHashVars();
     requestDevicesData();
     createNewMap();
-    setCryptoKey();
     
     if(!mode) {
         console_log("Please select a mode.");

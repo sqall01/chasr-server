@@ -2,7 +2,7 @@ var request_data = new XMLHttpRequest();
 var request_devices = new XMLHttpRequest();
 var global_gps_data = [];
 var global_enc_gps_data = [];
-var secret_hash;
+var secret_hash = null;
 var final_aes_key;
 var final_hmac_key;
 var store_secret = false;
@@ -18,17 +18,17 @@ var end_date = 0;
 var live_timer = null;
 
 
-async function createAESKey(secret_hash) {
+async function createAESKey(used_secret_hash) {
     return window.crypto.subtle.importKey("raw",
-                                          secret_hash,
+                                          used_secret_hash,
                                           {name: "AES-CBC",},
                                           false,
                                           ["decrypt"]);
 }
 
-async function createHMACKey(secret_hash) {
+async function createHMACKey(used_secret_hash) {
     return window.crypto.subtle.importKey("raw",
-                                          secret_hash,
+                                          used_secret_hash,
                                           {name:"HMAC", "hash":"SHA-256"},
                                           false,
                                           ["verify"]);
@@ -139,18 +139,21 @@ function byteArrayToHexstring(byte_array) {
 
 async function processNewGpsData(new_gps_data) {
 
-    // If the key is not available yet, return.
+    // If the key is not available yet, try to set it..
     if(!final_aes_key || !final_hmac_key) {
-        console_log("Decryption key not yet available.");
-        console_log("Did you set a secret?");
 
-        // Store encrypted GPS data as long as we do not
-        // have any key to decrypt.
-        for(var i = 0; i < new_gps_data["locations"].length; i++) {
-            global_enc_gps_data.push(new_gps_data["locations"][i]);
+        is_key_set = await setCryptoKey();
+        if(!is_key_set) {
+            console_log("Decryption key not yet available. Did you set a secret?");
+
+            // Store encrypted GPS data as long as we do not
+            // have any key to decrypt.
+            for(var i = 0; i < new_gps_data["locations"].length; i++) {
+                global_enc_gps_data.push(new_gps_data["locations"][i]);
+            }
+
+            return;
         }
-
-        return;
     }
 
     // If we have stored encrypted gps positions (because we did
