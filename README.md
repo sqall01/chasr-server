@@ -2,6 +2,13 @@
 
 [ChasR is an open-source end-to-end encrypted GPS tracking system](https://alertr.de/chasr). It can be used directly as [service](https://alertr.de/chasr) or hosted by oneself. The goal of ChasR is to offer a privacy protecting GPS tracking service by using end-to-end encryption. This means that the sensitive location data of a user is directly encrypted on the device before it is sent to the server. Since the server does not know the key for the encryption, it cannot see the location data. The stored location data can be accessed either via Android App or web interface. Again, the location data is decrypted on the device and hence the server has no way of knowing the location of the user. All you need to use ChasR is a [free account](https://alertr.de/register) and ChasR logging application.
 
+A diagram showing the ChasR architecture (a logger device for collecting the location data, the server that stores the encrypted data, and the map device showing the location data) looks like the following:
+
+<div align="center">
+<img src="img/architecture.png" />
+</div>
+<br />
+
 The ChasR GPS Tracking System is separated into multiple components:
 
 **Logger**
