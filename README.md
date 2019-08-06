@@ -34,11 +34,11 @@ This is the server component of the ChasR GPS Tracking System. Its task is to st
 
 ## Install
 
-Installing the server is rather simple. It needs a MySQL server and PHP 7. You have to create a MySQL user for the server and a database for it. Rename the configuration template file `config/config.php.template` to `config/config.php` and insert the needed information into it. Afterwards, execute `config/install.php` to create the needed database layout.
+Installing the server is rather simple. It needs a MySQL server, a web server and PHP 7. You have to create a MySQL user for the server and a database for it. Place the project into your web root directory. Rename the configuration template file `config/config.php.template` to `config/config.php` and insert the needed information into it. Afterwards, browse to `config/install.php` to create the needed database layout.
 
 To create a user you can use the `config/add_user.php` file. You have to set the values in this file to create the corresponding user.
 
-All clients are written to use HTTPS for security reasons. Therefore, if you want to host the server yourself you have to configure your webserver to serve HTTPS with a valid certificate.
+All clients are written to use HTTPS for security reasons. Therefore, if you want to host the server yourself you have to configure your web server to serve HTTPS with a valid certificate.
 
 
 # Supporting ChasR
