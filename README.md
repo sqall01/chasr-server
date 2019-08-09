@@ -31,6 +31,7 @@ Additionally, the ChasR GPS Tracking System can be used as part of the [AlertR A
 
 This is the server component of the ChasR GPS Tracking System. Its task is to store the encrypted GPS data, providing access to it via a well defined [API](https://github.com/sqall01/chasr-server/wiki) and to give the user access to the data via a map view. The server uses a MySQL database as backend to store the GPS data and OpenLayer with OpenStreetMap to provide a map view.
 
+![screenshot_browser](img/browser_screenshot.png)
 
 ## Install
 
