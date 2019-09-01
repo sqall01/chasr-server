@@ -11,6 +11,9 @@ function console_log(text) {
                      ("0" + date.getUTCMinutes()).slice(-2) + ":" +
                      ("0" + date.getUTCSeconds()).slice(-2);
     var output = dateString + ": " + text + "\n";
+
+    // TODO: Appending a string gets really slow with a lot of output.
+    // Find another way to have a console output.
     output += text_area.value;
     text_area.value = output;
 }
@@ -23,6 +26,9 @@ function console_error(text) {
                      ("0" + date.getUTCMinutes()).slice(-2) + ":" +
                      ("0" + date.getUTCSeconds()).slice(-2);
     var output = dateString + " Error: " + text + "\n";
+
+    // TODO: Appending a string gets really slow with a lot of output.
+    // Find another way to have a console output.
     output += text_area.value;
     text_area.value = output;
 }
