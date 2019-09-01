@@ -1,3 +1,8 @@
+// Used by "callbackStartDecryptAllGpsPositions()"
+// and "callbackStartDecryptGpsPosition()" to display state of decryption.
+var callback_gps_enc_ctr = 0;
+var callback_gps_enc_size = 0;
+
 function console_log(text) {
     console.log(text);
     var text_area = document.getElementById("log_output");
@@ -32,6 +37,31 @@ function callbackEndGpsPosition(gps_point) {
 
 // Is called after a GPS position is placed on the map.
 function callbackGpsPosition(gps_point) {
+}
+
+// Is called before the newly received GPS positions are decrypted.
+function callbackStartDecryptAllGpsPositions(gps_data) {
+    callback_gps_enc_size = gps_data.length;
+    callback_gps_enc_ctr = 0;
+}
+
+// Is called after the newly received GPS positions were decrypted.
+function callbackEndDecryptAllGpsPositions(gps_data) {
+}
+
+// Is called before the single GPS position is decrypted.
+function callbackStartDecryptGpsPosition(gps_data) {
+    callback_gps_enc_ctr++;
+
+    console_log("Decrypting position "
+                + callback_gps_enc_ctr
+                + "/"
+                + callback_gps_enc_size
+                + ".");
+}
+
+// Is called after the single GPS position was decrypted.
+function callbackEndDecryptGpsPosition(gps_data) {
 }
 
 function showDevicesData(devices_data) {

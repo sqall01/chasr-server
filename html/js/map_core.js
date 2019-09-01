@@ -166,9 +166,15 @@ async function processNewGpsData(new_gps_data) {
         global_enc_gps_data = [];
     }
 
+    // Execute callback to signal start of whole gps data decryption.
+    callbackStartDecryptAllGpsPositions(new_gps_data["locations"]);
+
     // Process received gps data.
     for(var i = 0; i < new_gps_data["locations"].length; i++) {
         var new_data = new_gps_data["locations"][i];
+
+        // Execute callback to signal start of single gps data decryption.
+        callbackStartDecryptGpsPosition(new_data);
 
         // Only proceed if received gps position is
         // newer than our last known position.
@@ -230,9 +236,15 @@ async function processNewGpsData(new_gps_data) {
             console_error("Did you set the correct secret?");
         }
         
+        // Execute callback to signal end of single gps data decryption.
+        callbackEndDecryptGpsPosition(new_dec_data);
+
         // Add new gps position to our global gps data.
         global_gps_data.push(new_dec_data);
     }
+
+    // Execute callback to signal end of whole gps data decryption.
+    callbackEndDecryptAllGpsPositions(global_gps_data);
 
     // Add all gps positions to the map.
     if(mode === "live") {

@@ -36,6 +36,22 @@ function callbackGpsPosition(gps_point) {
     Android.addGpsPosition(lat, lon, alt, speed, utctime);
 }
 
+// Is called before the newly received GPS positions are decrypted.
+function callbackStartDecryptAllGpsPositions(gps_data) {
+}
+
+// Is called after the newly received GPS positions were decrypted.
+function callbackEndDecryptAllGpsPositions(gps_data) {
+}
+
+// Is called before the single GPS position is decrypted.
+function callbackStartDecryptGpsPosition(gps_data) {
+}
+
+// Is called after the single GPS position was decrypted.
+function callbackEndDecryptGpsPosition(gps_data) {
+}
+
 function showDevicesData(devices_data) {
 }
 
