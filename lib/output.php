@@ -42,6 +42,9 @@ function output_map() {
     if (strpos($_SERVER["HTTP_USER_AGENT"], "ChasR Map") !== FALSE) {
         include("./html/map_android.html");
     }
+    else if (strpos($_SERVER["HTTP_USER_AGENT"], "ChasR Map Test") !== FALSE) {
+        include("./html/map_android_test.html");
+    }
     else {
         include("./html/map_browser.html");
     }
