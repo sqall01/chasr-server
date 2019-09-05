@@ -41,7 +41,7 @@ function callbackGpsPosition(gps_point) {
 
 // Is called before the newly received GPS positions are decrypted.
 function callbackStartDecryptAllGpsPositions(gps_data) {
-    callback_gps_enc_ctr = 0;
+    callback_gps_enc_pos = 0;
     Android.startDecryptAllGpsPositions(gps_data.length);
 }
 
@@ -53,7 +53,6 @@ function callbackEndDecryptAllGpsPositions(gps_data) {
 // Is called before the single GPS position is decrypted.
 function callbackStartDecryptGpsPosition(gps_data) {
     Android.startDecryptGpsPosition(callback_gps_enc_pos);
-
 }
 
 // Is called after the single GPS position was decrypted.
