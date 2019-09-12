@@ -1,3 +1,6 @@
+// Used "callbackStartDecryptGpsPosition()" to display state of decryption.
+var callback_gps_enc_pos = 0;
+
 function console_log(text) {
     Android.console_log(text);
 }
@@ -38,18 +41,24 @@ function callbackGpsPosition(gps_point) {
 
 // Is called before the newly received GPS positions are decrypted.
 function callbackStartDecryptAllGpsPositions(gps_data) {
+    callback_gps_enc_pos = 0;
+    Android.startDecryptAllGpsPositions(gps_data.length);
 }
 
 // Is called after the newly received GPS positions were decrypted.
 function callbackEndDecryptAllGpsPositions(gps_data) {
+    Android.endDecryptAllGpsPositions(gps_data.length);
 }
 
 // Is called before the single GPS position is decrypted.
 function callbackStartDecryptGpsPosition(gps_data) {
+    Android.startDecryptGpsPosition(callback_gps_enc_pos);
 }
 
 // Is called after the single GPS position was decrypted.
 function callbackEndDecryptGpsPosition(gps_data) {
+    Android.endDecryptGpsPosition(callback_gps_enc_pos);
+    callback_gps_enc_pos++;
 }
 
 function showDevicesData(devices_data) {
