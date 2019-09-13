@@ -57,7 +57,8 @@ function callbackStartDecryptGpsPosition(gps_data) {
 
 // Is called after the single GPS position was decrypted.
 function callbackEndDecryptGpsPosition(gps_data) {
-    Android.endDecryptGpsPosition(callback_gps_enc_pos);
+    // Since callback is not used in App yet, ignore it to speed up decryption.
+    //Android.endDecryptGpsPosition(callback_gps_enc_pos);
     callback_gps_enc_pos++;
 }
 
