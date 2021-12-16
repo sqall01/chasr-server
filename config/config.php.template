@@ -29,4 +29,42 @@ $config_chasr_num_mid_devices = 5;
 // is allowed to store on the server.
 $config_chasr_num_max_devices = 20;
 
+
+
+// Overwrite parameter $config_mysql_server if the MYSQL_SERVER environment variable is set
+if (getenv("MYSQL_SERVER")) {
+    $config_mysql_server = getenv("MYSQL_SERVER");
+}
+// Overwrite setting $config_mysql_username if the MYSQL_USERNAME environment variable is set
+if (getenv("MYSQL_USERNAME")) {
+    $config_mysql_username = getenv("MYSQL_USERNAME");
+}
+// Overwrite setting $config_mysql_password if the MYSQL_PASSWORD environment variable is set
+if (getenv("MYSQL_PASSWORD")) {
+    $config_mysql_password = getenv("MYSQL_PASSWORD");
+}
+// Overwrite setting $config_mysql_database if the MYSQL_DATABASE environment variable is set
+if (getenv("MYSQL_DATABASE")) {
+    $config_mysql_database = getenv("MYSQL_DATABASE");
+}
+// Overwrite setting $config_mysql_port $config_mysql_server if the MYSQL_PORT environment variable is set
+if (getenv("MYSQL_PORT")) {
+    $config_mysql_port = getenv("MYSQL_PORT");
+}
+// Overwrite setting $config_session_expire if the SESSION_EXPIRE environment variable is set
+if (getenv("SESSION_EXPIRE")) {
+    $config_session_expire = getenv("SESSION_EXPIRE");
+}
+// Overwrite setting $config_chasr_num_min_devices if the NUM_MIN_DEVICES environment variable is set
+if (getenv("NUM_MIN_DEVICES")) {
+    $config_chasr_num_min_devices = getenv("NUM_MIN_DEVICES");
+}
+// Overwrite setting $config_chasr_num_mid_devices if the NUM_MID_DEVICES environment variable is set
+if (getenv("NUM_MID_DEVICES")) {
+    $config_chasr_num_mid_devices = getenv("NUM_MID_DEVICES");
+}
+// Overwrite setting $config_chasr_num_max_devices if the NUM_MAX_DEVICES environment variable is set
+if (getenv("NUM_MAX_DEVICES")) {
+    $config_chasr_num_max_devices = getenv("NUM_MAX_DEVICES");
+}
 ?>
