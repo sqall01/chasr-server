@@ -41,6 +41,28 @@ To create a user you can use the `config/add_user.php` file. You have to set the
 
 All clients are written to use HTTPS for security reasons. Therefore, if you want to host the server yourself you have to configure your web server to serve HTTPS with a valid certificate.
 
+## Docker
+
+You can create a docker image from the repository executing the command:
+
+```
+docker build -t chasr-server .
+```
+
+The docker image created is named `chasr-server`. The service can then be configured using environment variables. Available environment variables are:
+
+* MYSQL_SERVER
+* MYSQL_USERNAME
+* MYSQL_PASSWORD
+* MYSQL_DATABASE
+* MYSQL_PORT
+* SESSION_EXPIRE
+* NUM_MIN_DEVICES
+* NUM_MID_DEVICES
+* NUM_MAX_DEVICES
+
+Please refer to the configuration template file `config/config.php.template` for a description of these variables. After you started the container, browse to `config/install.php` to create the needed database layout.
+
 
 # Supporting ChasR
 <a name="supporting_chasr"/>
