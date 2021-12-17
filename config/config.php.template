@@ -7,6 +7,10 @@
 // 
 // Licensed under the GNU Affero General Public License, version 3.
 
+// ##################################################
+// # Begin ChasR Configuration
+// ##################################################
+
 // MySQL Server settings.
 $config_mysql_server = "localhost";
 $config_mysql_username = "chasr_db_user";
@@ -29,6 +33,9 @@ $config_chasr_num_mid_devices = 5;
 // is allowed to store on the server.
 $config_chasr_num_max_devices = 20;
 
+// ##################################################
+// # End ChasR Configuration
+// ##################################################
 
 
 // Overwrite parameter $config_mysql_server if the MYSQL_SERVER environment variable is set
