@@ -132,7 +132,7 @@ function add_gps_data($mysqli, $user_id, $gps_data) {
             die(json_encode($result));
         }
         $row = $result->fetch_assoc();
-        if ($row === null) {
+        if ($row != null) {
             continue;
         }
 
